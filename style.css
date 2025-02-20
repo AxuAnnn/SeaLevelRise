@@ -1,0 +1,713 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans TC", serif;
+}
+body, html {
+    height: 100%;
+}
+.section {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    font-family: "Noto Sans TC",Arial, sans-serif;
+    position: relative;
+}
+.section1 { 
+    /*background-color: #FF5733;*/
+    overflow: hidden;
+}
+/* 左側氣泡圖設定 */
+.bubble-left {
+    position: absolute;
+    top: 200px;         /* 從section底部向上30px */
+    left: 150px;        /* 靠左40px */
+    width: 400px;       /* 圖片寬度，可依需求調整 */
+    height: auto;
+    z-index: 4;        /* 保持在最上層，僅次於文字 */
+}
+
+/* 右側氣泡圖設定 */
+.bubble-right {
+    position: absolute;
+    top: 100px;         /* 從section底部向上30px */
+    right: 100px;       /* 靠右40px */
+    width: 400px;       /* 圖片寬度，可依需求調整 */
+    height: auto;
+    z-index: 4;        /* 保持在最上層，僅次於文字 */
+}
+
+/* 船的圖層設定，位於最上層波浪下方 */
+.boat {
+    position: absolute;
+    top: 5px;             /* 靠近畫面右上角的垂直位置 */
+    right: 150px;           /* 靠近畫面右上角的水平位置 */
+    width: 80px;           /* 船的大小，可依需求調整 */
+    height: auto;
+    z-index: 2;            /* 層級設定在 wave1 之下，其他波浪之上 */
+}
+.text-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;  /* 確保文字在最上層 */
+}
+
+/* 中文文字垂直排列 */
+.vertical-text {
+    display: flex;
+    flex-direction: column;
+    margin-right: 24px;  /* 與英文文字間隔 24px */
+}
+
+.vertical-text span {
+    font-size: 36px;  /* 中文字體大小，後續可調整 */
+    font-weight: 900;
+    color: white;
+    line-height: 1.2;
+}
+
+/* 英文文字容器，確保線條與文字水平排列 */
+.text-container {
+    display: flex;
+    position: relative;
+}
+
+/* 英文文字排列 */
+.text-content {
+    text-align: left;
+    line-height: 1.5;
+}
+.text-container span {
+    display: block;      /* 每個單字換行 */
+    font-size: 64px;     /* 調整字體大小 */
+    font-weight: 900;
+    color: white;        /* 預設文字顏色為白色 */
+}
+
+.text-container span::first-letter {
+    color: #246D9D;      /* 深藍色，用於 S、L、R */
+}
+/* 垂直線條樣式 */
+.text-line {
+    position: absolute;
+    top: 10%;
+    right: -60px;        /* 線條與文字間隔 24px */
+    width: 2px;
+    height: 180px;        /* 垂直線條延伸整個文字高度 */
+    background-color: white;
+    transform: translate(-50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;  /* 圖標靠底對齊 */
+}
+/* 圖標置於線條下方 */
+.line-icon {
+    position: absolute;
+    top: calc(10% + 180px + 4px); /* 線條底部再下移 10px */
+    right: -11px;                  /* 確保圖標與線條居中對齊 */
+    width: 24px;                   /* 圖標寬度，可調整 */
+    height: auto;
+}
+.waves {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
+.wave1 {
+    z-index: 3;
+}
+
+.wave2 {
+    z-index: 2;
+}
+
+.wave3 {
+    z-index: 1;
+}
+.section2 { 
+    background-color: #9ADEF1; 
+    position: relative; /* 確保SVG圖能正確定位 */
+}
+
+.paragraph {
+    text-align: center;         /* 讓所有段落置中 */
+}
+
+.paragraph p {
+    display: block;             /* 確保每個段落單獨換行 */
+    width: fit-content;         /* 根據文字自動調整背景長度 */
+    margin: auto;
+    background-color: white;    /* 每行文字的背景色 */
+    color: #246D9D;             /* 文字顏色為深藍色 */
+    font-size: 1.8rem;          /* 字體大小 */
+    font-weight: 600;
+}
+/* 左側氣泡圖設定 */
+.section2 .bubble-left {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    width: 400px;   /* 可依需求調整大小 */
+    height: auto;
+    z-index: 4;
+}
+
+/* 右側氣泡圖設定 */
+.section2 .bubble-right {
+    position: absolute;
+    top: 100px;
+    right: 200px;
+    width: 200px;   /* 可依需求調整大小 */
+    height: auto;
+    z-index: 4;
+}
+.section3 { 
+    background-color: #9ADEF1; 
+    position: relative; /* 確保內部元素能正確定位 */
+}
+/* Section 3 字卡區塊 */
+.card-container {
+    position: absolute;
+    top: 30%;  /* 可調整上下位置 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 60px;
+    z-index: 4; /* 提高層級，確保字卡在最上層 */
+}
+
+/* 單張字卡樣式 */
+.card {
+    color: #246D9D;
+    padding: 20px;
+    width: 320px; /* 字卡寬度 */
+    text-align: center;
+}
+/* 字卡標題與內文樣式，可自由調整 */
+.card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+/* 字卡內的圖片 */
+.card img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* 冰山圖片樣式 */
+.iceberg {
+    position: absolute;
+    bottom: 0;         /* 貼近 section3 底部 */
+    left: 40px;        /* 距離左側 40px */
+    right: 40px;       /* 距離右側 40px */
+    width: calc(100% - 80px); /* 確保距離左右各 40px */
+    height: auto;
+    z-index: 3;        /* 圖層位置確保不被其他元素覆蓋 */
+}
+/* Section 4 背景區塊 */
+.section4 {
+    background-color: #9ADEF1;
+    position: relative;
+}
+
+.section4 .background-box {
+    position: absolute;
+    top: 0;
+    left: 40px;
+    width: calc(100% - 80px); /* 確保左右各 40px */
+    height: 100%; /* 填滿整個 section4 高度 */
+    background-color: white;
+}
+/* 大的容器，包含圖片與文字區塊 */
+.info-container {
+    display: flex;
+    justify-content: center; /* 置中對齊 */
+    align-items: center;
+    gap: 80px; /* 左右區塊間距 */
+    width: 1000px; /* 可調整整體寬度 */
+    max-width: 90%; /* 限制最大寬度 */
+    margin: 0 auto; /* 讓整體區塊置中 */
+    z-index: 5; /* 提高層級，確保在最上層 */
+}
+
+/* 左側圖片區塊 */
+.info-icon {
+    width: 800px; /* 可調整圖片區塊寬度 */
+    height: auto;
+    z-index: 5; /* 確保圖片在最上層 */
+}
+
+.info-icon img {
+    width: 100%; /* 確保圖片填滿區塊 */
+    height: auto;
+}
+
+/* 右側文字區塊 */
+.info-text {
+    width: 600px; /* 可調整文字區塊寬度 */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    z-index: 5; /* 確保圖片在最上層 */
+}
+
+/* 讓這一行文字的樣式與其他文字保持一致 */
+.info-text p {
+    font-size: 1.9rem; /* 這是整體字體大小 */
+    font-weight: 600; /* 這是整體字重 */
+    line-height: 1.2; /* 行距 */
+    color: #246D9D; /* 這是整體顏色 */
+    margin: 5px 0;
+}
+
+/* 571 億噸 特殊樣式 */
+.highlight-number {
+    font-size: 8rem; /* 調整數字大小 */
+    font-weight: 900; /* 加粗 */
+    color: #FF7C7C; /* 強調顏色 */
+}
+/* 聯合國環境規劃署 特殊樣式 */
+.un-title {
+    font-size: 1.2rem; /* 讓這段字可以獨立調整 */
+    font-weight: 500;
+    color: #D2D2D2; /* 顏色可調透明度 */
+}
+
+/* 《溫室氣體排放報告》 超連結樣式 */
+.un-link {
+    color: #D2D2D2; /* 超連結顏色 */
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.section5 { 
+    background-color: #9ADEF1; 
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+/* 反白文字區塊（獨立位置） */
+.sea-level-container {
+    position: absolute;
+    top: 8%; /* 可調整文字區塊位置 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5; /* 確保在最上層 */
+}
+
+.sea-level-text {
+    background-color: white; /* 反白背景 */
+    color: #246D9D; /* 預設文字顏色 */
+    font-size: 1.5rem; /* 可調整文字大小 */
+    font-weight: 600; /* 可調整字重 */
+    padding: 4px 5px; /* 內距確保文字不貼邊 */
+    text-align: center;
+    display: inline-block; /* 讓背景根據內容調整 */
+}
+/* 左側氣泡圖設定 */
+.section5 .bubble-left {
+    position: absolute;
+    top: 40px; /* 可調整上下距離 */
+    left: 150px; /* 可調整左右距離 */
+    width: 300px; /* 可調整大小 */
+    height: auto;
+    z-index: 4;
+}
+
+/* 右側氣泡圖設定 */
+.section5 .bubble-right {
+    position: absolute;
+    top: 150px; /* 可調整上下距離 */
+    right: 180px; /* 可調整左右距離 */
+    width: 280px; /* 可調整大小 */
+    height: auto;
+    z-index: 4;
+}
+/* SVG 圖片容器，確保 3 張圖片可以疊放在正中央 */
+.blobs-stack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 疊放的 SVG 圖片樣式 */
+.blobs-stack img {
+    position: absolute;
+    height: auto;
+}
+
+.blobs-svg1 {
+    width: 360px; /* 第一層圖片大小 */
+    z-index: 3; /* 最上層 */
+}
+
+.blobs-svg2 {
+    width: 410px; /* 第二層圖片大小 */
+    z-index: 2; /* 中間層 */
+}
+
+.blobs-svg3 {
+    width: 380px; /* 第三層圖片大小 */
+    z-index: 1; /* 最底層 */
+}
+/* 三角形與數值顯示區塊 */
+.value-box {
+    position: absolute;
+    top: 42%; /* 可調整位置 */
+    left: 42%;
+    transform: translateX(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 三角形與數值間距 */
+    z-index: 4; /* 確保在最上層 */
+}
+
+/* 可調整大小與顏色的三角形 */
+.triangle {
+    width: 50px; /* 可調整大小 */
+    height: 52px; /* 可調整高度 */
+    background-color: #FF7C7C; /* 預設紅色，可調整 */
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* 數值文字樣式 */
+.value-text {
+    font-size: 4rem; /* 可調整字體大小 */
+    font-weight: 900;
+    color: #246D9D; /* 預設藍色 */
+}
+/* mm 文字獨立樣式 */
+.value-text .unit {
+    font-size: 2.5rem; /* 可調整 mm 字體大小 */
+    font-weight: 700; /* 可調整字重 */
+}
+/* Section 6 設定 */
+.section6 {
+    background-color: #9ADEF1; /* 背景色，可調整 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* 反白文字區塊（獨立位置） */
+.sea-impact-container {
+    position: absolute;
+    top: 3%; /* 可調整文字區塊位置 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5; /* 確保在最上層 */
+}
+.sea-impact-text {
+    background-color: white; /* 反白背景 */
+    color: #246D9D; /* 預設文字顏色 */
+    font-size: 1.5rem; /* 可調整文字大小 */
+    font-weight: 600; /* 可調整字重 */
+    padding: 4px 5px; /* 內距確保文字不貼邊 */
+    text-align: center;
+    display: inline-block; /* 讓背景根據內容調整 */
+}
+/* 左側氣泡圖設定 */
+.section6 .bubble-left {
+    position: absolute;
+    top: 300px; /* 可調整上下距離 */
+    left: 300px; /* 可調整左右距離 */
+    width: 100px; /* 可調整大小 */
+    height: auto;
+    z-index: 4;
+}
+
+/* 右側氣泡圖設定 */
+.section6 .bubble-right {
+    position: absolute;
+    top: 280px; /* 可調整上下距離 */
+    right: 200px; /* 可調整左右距離 */
+    width: 200px; /* 可調整大小 */
+    height: auto;
+    z-index: 4;
+}
+/* 四個圓形圖片容器 */
+.circle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 兩列 */
+    grid-template-rows: repeat(2, auto); /* 兩行 */
+    gap: 40px; /* 可調整間距 */
+    position: absolute;
+    top: 16%; /* 可調整上下位置 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4; /* 確保圖片與文字區塊在最上層 */
+}
+
+/* 單個圖片與文字包在一起 */
+.circle-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 圖片樣式 */
+.circle-item img {
+    width: 250px; /* 可調整圖片大小 */
+    height: auto;
+}
+
+/* 文字內容樣式 */
+.circle-text {
+    position: absolute;
+    width: 80%; /* 限制文字範圍，防止超出圖片 */
+    text-align: center;
+    font-size: 1.5rem; /* 可調整字體大小 */
+    font-weight: 600; /* 可調整字重 */
+    line-height: 1.3; /* 可調整行距 */
+    color: #246D9D; /* 預設文字顏色 */
+    padding: 5px 10px; /* 內距確保文字不貼邊 */
+}
+
+/* Section 7 設定 */
+.section7 {
+    background-color: white; /* 背景色，可調整 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 隱藏超出範圍的資訊卡 */
+}
+/* 反白文字區塊（獨立位置） */
+.section7 .question-container {
+    position: absolute;
+    top: 3%; /* 可調整文字區塊位置 */
+    left: 10%; /* 可調整距離 */
+    z-index: 4; /* 確保文字在波浪上層 */
+}
+
+.question-text {
+    background-color: white; /* 反白背景 */
+    color: #246D9D; /* 預設文字顏色 */
+    font-size: 1.5rem; /* 可調整文字大小 */
+    font-weight: 600; /* 可調整字重 */
+    padding: 4px 5px; /* 內距確保文字不貼邊 */
+    text-align: center;
+    display: inline-block; /* 讓背景根據內容調整 */
+}
+/* 最上方的波浪圖片 */
+.section7 .wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* 確保填滿整個寬度 */
+    height: auto;
+    z-index: 3; /* 確保在最上層 */
+}
+/* 資訊卡容器 (橫向排列，包含 5 個卡片) */
+.info-card-container {
+    position: absolute;
+    top: 35%; /* 可調整上下位置 */
+    left: 50px; /* 可調整左右位置 */
+    display: flex;
+    flex-direction: row; /* 讓卡片橫向排列 */
+    gap: 60px; /* 卡片間距，可調整 */
+    z-index: 4;
+}
+
+/* 單個資訊卡 */
+.info-card {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* 調整為垂直排列 */
+    align-items: center; /* 置中對齊 */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* 可調整區塊大小 */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* 防止卡片縮小 */
+    text-align: center; /* 文字置中 */
+}
+
+/* Icon與背景包裝容器 */
+.icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px; /* 可調整大小 */
+    height: 90px; /* 可調整大小 */
+    margin-bottom: 12px; /* 與標題保持間距 */
+}
+
+/* Icon背景圓形 */
+.icon-circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: pink;
+    border-radius: 50%;
+    z-index: 1; /* 確保在 icon 背後 */
+}
+
+/* Icon圖片 */
+.icon-image {
+    position: relative;
+    width: 70px; /* 可調整 icon 大小 */
+    height: auto;
+    z-index: 2; /* 確保在圓形背景前方 */
+}
+
+/* 卡片內容區 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 文字置中 */
+    width: 100%; /* 確保內容區塊填滿父元素 */
+    max-width: 250px; /* 限制最大寬度，防止超出 */
+}
+
+/* 標題文字 */
+.card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #246D9D;
+    margin-bottom: 12px;
+}
+
+/* 內文文字 */
+.card-text {
+    font-size: 1rem;
+    color: #246D9D;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%; /* 讓內文根據父元素自動換行 */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+/* 反白文字區塊（獨立位置） */
+.section7 .question-container {
+    position: absolute;
+    top: 3%; /* 可調整文字區塊位置 */
+    left: 10%; /* 可調整距離 */
+    z-index: 5; /* 提高層級，確保文字在最上層 */
+}
+
+.question-text {
+    background-color: white; /* 反白背景 */
+    color: #246D9D; /* 預設文字顏色 */
+    font-size: 1.5rem; /* 可調整文字大小 */
+    font-weight: 600; /* 可調整字重 */
+    padding: 4px 5px; /* 內距確保文字不貼邊 */
+    text-align: center;
+    display: inline-block; /* 讓背景根據內容調整 */
+}
+
+/* 資料來源區塊（右上角） */
+.section7 .source-container {
+    position: absolute;
+    top: 2%; /* 可調整文字區塊位置 */
+    right: 3%; /* 可調整距離 */
+    z-index: 5; /* 提高層級，確保文字在最上層 */
+}
+
+.source-text {
+    font-size: 1.2rem; /* 可調整文字大小 */
+    font-weight: 500; /* 可調整字重 */
+    color: #F2F2F2; /* 可調整顏色 */
+}
+
+.source-text a {
+    color: #F2F2F2; /* 超連結顏色 */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.source-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* Section 8 設定 */
+.section8 {
+    background-color: white; /* 背景色，可調整 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 反白文字區塊（獨立位置） */
+.sea-action-container {
+    position: absolute;
+    top: 45%; /* 可調整文字區塊位置 */
+    left: 52%;
+    transform: translateX(-50%);
+    z-index: 5; /* 提高層級，確保文字在最上層 */
+}
+
+.sea-action-text {
+    background-color: white; /* 反白背景 */
+    color: #246D9D; /* 預設文字顏色 */
+    font-size: 1.8rem; /* 可調整文字大小 */
+    font-weight: 600; /* 可調整字重 */
+    padding: 4px 5px; /* 內距確保文字不貼邊 */
+    text-align: center;
+    display: inline-block; /* 讓背景根據內容調整 */
+}
+
+/* 波浪圖片容器，確保 3 張圖片可以疊放在正中央 */
+.section8 .waves {
+    position: absolute;
+    bottom: 0; /* 靠齊底部 */
+    width: 100%;
+    height: auto;
+}
+
+/* 疊放的波浪 SVG 圖片樣式 */
+.section8 .wave {
+    position: absolute;
+    bottom: 0; /* 靠齊底部 */
+    width: 100%;
+    height: auto;
+}
+
+.section8 .wave1 {
+    z-index: 3; /* 最上層波浪 */
+}
+
+.section8 .wave2 {
+    z-index: 2; /* 中間層波浪 */
+}
+
+.section8 .wave3 {
+    z-index: 1; /* 最底層波浪 */
+}
+
+
+

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Level Rise</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav></nav>
+    </header>
+    <main>
+        <div class="section section1">
+            <!-- 新增船的SVG圖 -->
+            <img src="image/boat.svg" class="boat" alt="Boat">
+            <!-- 新增左側與右側的SVG圖 -->
+            <img src="image/S1Bubble-left.svg" class="bubble-left" alt="Bubble Left">
+            <img src="image/S1Bubble-right.svg" class="bubble-right" alt="Bubble Right">
+
+            <div class="text-wrapper">
+                <!-- 中文文字：每個字換行 -->
+                <div class="vertical-text">
+                    <span>上</span>
+                    <span>升</span>
+                    <span>的</span>
+                    <span>海</span>
+                    <span>平</span>
+                    <span>面</span>
+                </div>
+            
+                <!-- 英文文字：Sea Level Rise -->
+                <div class="text-container">
+                    <div class="text-content">
+                        <span>Sea</span>
+                        <span>Level</span>
+                        <span>Rise</span>
+                    </div>
+                    <div class="text-line">
+                        <img src="image/mouse.svg" class="line-icon" alt="滑鼠">
+                    </div> <!-- 這條線會貫穿整個文字區塊 -->
+                </div>
+            </div>                      
+            <div class="waves">
+                <img src="image/wave1.svg" class="wave wave1" alt="Wave 1">
+                <img src="image/wave2.svg" class="wave wave2" alt="Wave 2">
+                <img src="image/wave3.svg" class="wave wave3" alt="Wave 3">
+            </div>
+        </div>
+        <div class="section section2">
+            <img src="image/S2Bubble-left.svg" class="bubble-left" alt="Bubble Left">
+            <img src="image/S2Bubble-right.svg" class="bubble-right" alt="Bubble Right">
+            <div class="paragraph">
+                <p>造成全球暖化及氣候變遷的主要原因為溫室氣體的排放。</p>
+                <p>而人類活動導致大量溫室氣體排入空氣中。</p>
+                <p>你知道有甚麼樣的人類活動正在排放這些溫室氣體嗎？</p>
+            </div>
+        </div>                 
+        <div class="section section3">
+            <div class="card-container">
+                <div class="card">
+                    <img src="image/forest.svg" alt="forest">
+                    <h3>砍伐森林與雨林</h3>
+                    <p>大規模移除森林植被，導致碳吸收能力下降，影響生態平衡。</p>
+                </div>
+                <div class="card">
+                    <img src="image/factory.svg" alt="factory">
+                    <h3>工廠排放廢氣</h3>
+                    <p>工業生產過程中釋放溫室氣體和污染物，對環境和空氣品質造成影響。</p>
+                </div>
+                <div class="card">
+                    <img src="image/city.svg" alt="city">
+                    <h3>城市排放廢氣</h3>
+                    <p>交通和建築活動產生的廢氣增加城市空氣污染，導致氣候變遷。</p>
+                </div>
+            </div>
+            <img src="image/up-iceberg.svg" class="iceberg" alt="Up Iceberg">
+        </div>
+      
+        <div class="section section4">
+            <div class="background-box"></div>
+            <div class="info-container">
+                <!-- 左側 SVG 圖片 -->
+                <div class="info-icon">
+                    <img src="image/pie-chart.svg" alt="Info Icon">
+                </div>
+                <!-- 右側文字內容 -->
+                <div class="info-text">
+                    <p>截止2023年全球</p>
+                    <p>溫室氣體已經達到了</p>
+                    <p><span class="highlight-number">571</span> 億噸</p>
+                    <p>二氧化碳當量（tCO2e）</p>
+                    <!-- ✅ 這是新增加的部分 -->
+                    <p>
+                        <span class="un-title">※聯合國環境規劃署</span> 
+                        <a href="https://www.unep.org/" class="un-link" target="_blank">《溫室氣體排放報告》</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+              
+        <div class="section section5">
+            <!-- 反白文字區塊（獨立） -->
+            <div class="sea-level-container">
+            <p class="sea-level-text">而自1993年起全球海平面平均上升已經達到</p>
+            </div>
+            <!-- 左右側氣泡圖 -->
+            <img src="image/S5Bubble-left.svg" class="bubble-left" alt="S5 Bubble Left">
+            <img src="image/S5Bubble-right.svg" class="bubble-right" alt="S5 Bubble Right">
+            <!-- 堆疊泡泡 -->
+            <div class="blobs-stack">
+                <img src="image/blobs1.svg" class="blobs-svg1" alt="blobs-svg1">
+                <img src="image/blobs2.svg" class="blobs-svg2" alt="blobs-svg2">
+                <img src="image/blobs3.svg" class="blobs-svg3" alt="blobs-svg3">
+            </div>
+            <!-- 數值與三角形區塊 -->
+            <div class="value-box">
+                <div class="triangle"></div>
+                <span class="value-text">100<span class="unit">mm</span></span>
+            </div>
+        </div>        
+        <div class="section section6">
+            <!-- 反白文字區塊 -->
+            <div class="sea-impact-container">
+                <p class="sea-impact-text">海平面上升帶來了許多危害與影響</p>
+            </div>
+            <!-- 左右側氣泡圖 -->
+            <img src="image/S6Bubble-left.svg" class="bubble-left" alt="S6 Bubble Left">
+            <img src="image/S6Bubble-right.svg" class="bubble-right" alt="S6 Bubble Right">
+            <div class="circle-grid">
+                <div class="circle-item">
+                    <img src="image/circle1.svg" alt="Circle 1">
+                    <span class="circle-text">颱風與大潮導致的海岸侵蝕</span>
+                </div>
+                <div class="circle-item">
+                    <img src="image/circle2.svg" alt="Circle 2">
+                    <span class="circle-text">海水入侵引發地下水鹽化</span>
+                </div>
+                <div class="circle-item">
+                    <img src="image/circle3.svg" alt="Circle 3">
+                    <span class="circle-text">低窪地區洪患與永久淹沒風險</span>
+                </div>
+                <div class="circle-item">
+                    <img src="image/circle4.svg     " alt="Circle 4">
+                    <span class="circle-text">基礎設施損害與國土流失</span>
+                </div>
+            </div>
+        </div>        
+        <div class="section section7">
+            <img src="image/wave4.svg" class="wave-top" alt="Wave 4">
+            <!-- 反白文字區塊 -->
+            <div class="question-container">
+            <p class="question-text">我們可以怎麼做？</p>
+            </div>
+            <!-- 資料來源區塊（右上角） -->
+            <div class="source-container">
+            <p class="source-text">資料來源：
+            <a href="https://www.greenpeace.org/" target="_blank">Greenpeace 綠色和平</a>
+            </p>
+            </div>
+            <!-- 資訊卡區塊容器 -->
+            <div class="info-card-container">
+                <div class="info-card">
+                    <div class="icon-wrapper">
+                        <div class="icon-circle"></div>
+                        <img src="image/icon-bus.svg" class="icon-image" alt="bus">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">大眾運輸通勤</h3>
+                        <p class="card-text">改變通勤方式可減少碳排放與空氣污染，交通運輸約佔臺灣碳排放總量的 14%。</p>
+                    </div>
+                </div>
+        
+                <div class="info-card">
+                    <div class="icon-wrapper">
+                        <div class="icon-circle"></div>
+                        <img src="image/icon-lightning.svg" class="icon-image" alt="lightning">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">使用節能家電</h3>
+                        <p class="card-text">節能標章冷氣比一般冷氣每年省 500-700 度電，減碳 300-400 公斤。</p>
+                    </div>
+                </div>
+        
+                <div class="info-card">
+                    <div class="icon-wrapper">
+                        <div class="icon-circle"></div>
+                        <img src="image/icon-bottle.svg" class="icon-image" alt="bottle">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">拒用塑膠製品</h3>
+                        <p class="card-text">塑膠生產碳排放佔全球 6%，等同航空業總排放，減塑可保護環境並減緩氣候變遷。</p>
+                    </div>
+                </div>
+        
+                <div class="info-card">
+                    <div class="icon-wrapper">
+                        <div class="icon-circle"></div>
+                        <img src="image/icon-meat.svg" class="icon-image" alt="meat">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">少肉多蔬的飲食習慣</h3>
+                        <p class="card-text">吃一份牛排產生 330 公克二氧化碳，相當於開車 4.8 公里，畜牧業碳排放佔全球 18%。</p>
+                    </div>
+                </div>
+        
+                <div class="info-card">
+                    <div class="icon-wrapper">
+                        <div class="icon-circle"></div>
+                        <img src="image/icon-recycle.svg" class="icon-image" alt="recycle">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">重複利用降低物慾</h3>
+                        <p class="card-text">衣物與物品生產運送累積碳足跡，延長使用壽命、重複利用可減少浪費。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="section section8">
+            <!-- 反白文字區塊（獨立） -->
+            <div class="sea-action-container">
+                <p class="sea-action-text">一起讓海平面下降吧！</p>
+            </div>
+            
+            <!-- 疊放的波浪 SVG 圖片 -->
+            <div class="waves">
+                <img src="image/wave1.svg" class="wave wave1" alt="Wave 1">
+                <img src="image/wave2.svg" class="wave wave2" alt="Wave 2">
+                <img src="image/wave3.svg" class="wave wave3" alt="Wave 3">
+            </div>
+        </div>
+        
+               
+    </main>
+    <footer>
+
+    </footer>
+    
+</body>
+</html>
