@@ -21,6 +21,7 @@ body, html {
 .section1 { 
     /*background-color: #FF5733;*/
     overflow: hidden;
+    position: relative;
 }
 /* 左側氣泡圖設定 */
 .bubble-left {
@@ -60,7 +61,6 @@ body, html {
     transform: translateX(-50%);
     z-index: 4;  /* 確保文字在最上層 */
 }
-
 /* 中文文字垂直排列 */
 .vertical-text {
     display: flex;
