@@ -44,38 +44,43 @@
                     </div> <!-- 這條線會貫穿整個文字區塊 -->
                 </div>
             </div>                      
+            <!-- ✅ 獨立的底部色塊 -->
+            <div class="wave-background"></div>
+
             <div class="waves">
-                <!-- 原本的波浪圖片改為內嵌 SVG wave1-->
-                <svg viewBox="0 0 1440 320" class="wave wave1">
+                <!-- 第一層波浪 -->
+                <svg viewBox="0 0 1440 480" class="wave wave1">
                     <defs>
                         <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#B6E2FF"/>  <!-- 上方顏色 -->
                             <stop offset="100%" stop-color="#5DB4ED"/> <!-- 下方顏色 -->
                         </linearGradient>
                     </defs>
-                    <path fill="url(#waveGradient1)" fill-opacity="1" d="M0,128L60,144C120,160,240,192,360,197.3C480,203,600,181,720,154.7C840,128,960,96,1080,101.3C1200,107,1320,149,1380,170.7L1440,192V320H0Z"></path>
+                    <path fill="url(#waveGradient1)" d="M0,180L60,220C120,260,240,280,360,290C480,300,600,270,720,240C840,210,960,170,1080,160C1200,150,1320,190,1380,210L1440,230V480H0Z"></path>
                 </svg>
-                <!-- 原本的波浪圖片改為內嵌 SVG wave2-->
-                <svg viewBox="0 0 1440 320" class="wave wave2">
+                
+                <!-- 第二層波浪 -->
+                <svg viewBox="0 0 1440 480" class="wave wave2">
                     <defs>
                         <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#96DEF2"/>  <!-- 上方顏色 -->
                             <stop offset="100%" stop-color="#0E9AC3"/> <!-- 下方顏色 -->
                         </linearGradient>
                     </defs>
-                    <path fill="url(#waveGradient2)" fill-opacity="1" d="M0,160L60,176C120,192,240,224,360,229.3C480,235,600,213,720,186.7C840,160,960,128,1080,133.3C1200,139,1320,181,1380,202.7L1440,224V320H0Z"></path>
+                    <path fill="url(#waveGradient2)" d="M0,190L60,230C120,270,240,290,360,300C480,310,600,280,720,250C840,220,960,180,1080,170C1200,160,1320,200,1380,220L1440,240V480H0Z"></path>
                 </svg>
-                <!-- 原本的波浪圖片改為內嵌 SVG wave3-->
-                <svg viewBox="0 0 1440 320" class="wave wave3">
+
+                <!-- 第三層波浪 -->
+                <svg viewBox="0 0 1440 480" class="wave wave3">
                     <defs>
                         <linearGradient id="waveGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#E5F6FA"/>  <!-- 上方顏色 -->
                             <stop offset="100%" stop-color="#9ADEF1"/> <!-- 下方顏色 -->
                         </linearGradient>
                     </defs>
-                    <path fill="url(#waveGradient3)" fill-opacity="1" d="M0,192L60,208C120,224,240,256,360,261.3C480,267,600,245,720,218.7C840,192,960,160,1080,165.3C1200,171,1320,213,1380,234.7L1440,256V320H0Z"></path>
-                </svg>                
-            </div>
+                    <path fill="url(#waveGradient3)" d="M0,200L60,240C120,280,240,300,360,310C480,320,600,290,720,260C840,230,960,190,1080,180C1200,170,1320,210,1380,230L1440,250V480H0Z"></path>
+                </svg>
+            </div>                               
         </div>
         <div class="section section2">
             <img src="image/S2Bubble-left.svg" class="bubble-left" alt="Bubble Left">

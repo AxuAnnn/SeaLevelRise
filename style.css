@@ -30,7 +30,7 @@ body, html {
     left: 150px;        /* 靠左40px */
     width: 400px;       /* 圖片寬度，可依需求調整 */
     height: auto;
-    z-index: 4;        /* 保持在最上層，僅次於文字 */
+    z-index: 10;        /* 保持在最上層，僅次於文字 */
 }
 
 /* 右側氣泡圖設定 */
@@ -40,7 +40,7 @@ body, html {
     right: 100px;       /* 靠右40px */
     width: 400px;       /* 圖片寬度，可依需求調整 */
     height: auto;
-    z-index: 4;        /* 保持在最上層，僅次於文字 */
+    z-index: 10;        /* 保持在最上層，僅次於文字 */
 }
 
 /* 船的圖層設定，位於最上層波浪下方 */
@@ -59,7 +59,7 @@ body, html {
     bottom: 30%;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 4;  /* 確保文字在最上層 */
+    z-index: 10;  /* 確保文字在最上層 */
 }
 /* 中文文字垂直排列 */
 .vertical-text {
@@ -119,37 +119,49 @@ body, html {
     width: 24px;                   /* 圖標寬度，可調整 */
     height: auto;
 }
-.waves {
+/* ✅ 底部色塊 (背景色) */
+.wave-background {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: auto;
+    height: 65vh; /* 這裡你可以調整高度 */
+    background-color: #9ADEF1; /* ✅ 可以自由修改顏色 */
+    z-index: 5; /* 高於波浪，但低於 text-wrapper */
 }
-/* 確保波浪固定在畫面底部 */
+
+/* ✅ 波浪容器 */
+.waves {
+    position: absolute;
+    bottom: 45vh; /* 讓波浪頂在底部色塊的上方 */
+    width: 100%;
+    height: 80vh; /* 讓波浪佔滿 80% 畫面 */
+    overflow: hidden;
+}
+
+/* ✅ 波浪個別設定 */
 .wave {
     position: absolute;
-    bottom: 0; /* 波浪貼齊底部 */
-    left: 0;
+    bottom: 0;
     width: 100%;
-    height: auto;
-    z-index: 1; /* 確保波浪位於背景最底層 */
+    height: 100%;
 }
 
-/* 調整不同波浪的層級，讓它們交錯 */
+/* 調整波浪順序，確保交錯 */
 .wave1 {
-    z-index: 2;
-    opacity: 1; 
-}
-
-.wave2 {
     z-index: 3;
     opacity: 1;
 }
 
-.wave3 {
+.wave2 {
     z-index: 4;
     opacity: 1;
 }
+
+.wave3 {
+    z-index: 6;
+    opacity: 1;
+}
+
 .section2 { 
     background-color: #9ADEF1; 
     position: relative; /* 確保SVG圖能正確定位 */
