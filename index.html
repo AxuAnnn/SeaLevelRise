@@ -45,9 +45,36 @@
                 </div>
             </div>                      
             <div class="waves">
-                <img src="image/wave1.svg" class="wave wave1" alt="Wave 1">
-                <img src="image/wave2.svg" class="wave wave2" alt="Wave 2">
-                <img src="image/wave3.svg" class="wave wave3" alt="Wave 3">
+                <!-- 原本的波浪圖片改為內嵌 SVG wave1-->
+                <svg viewBox="0 0 1440 320" class="wave wave1">
+                    <defs>
+                        <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#B6E2FF"/>  <!-- 上方顏色 -->
+                            <stop offset="100%" stop-color="#5DB4ED"/> <!-- 下方顏色 -->
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#waveGradient1)" fill-opacity="1" d="M0,128L60,144C120,160,240,192,360,197.3C480,203,600,181,720,154.7C840,128,960,96,1080,101.3C1200,107,1320,149,1380,170.7L1440,192V320H0Z"></path>
+                </svg>
+                <!-- 原本的波浪圖片改為內嵌 SVG wave2-->
+                <svg viewBox="0 0 1440 320" class="wave wave2">
+                    <defs>
+                        <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#96DEF2"/>  <!-- 上方顏色 -->
+                            <stop offset="100%" stop-color="#0E9AC3"/> <!-- 下方顏色 -->
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#waveGradient2)" fill-opacity="1" d="M0,160L60,176C120,192,240,224,360,229.3C480,235,600,213,720,186.7C840,160,960,128,1080,133.3C1200,139,1320,181,1380,202.7L1440,224V320H0Z"></path>
+                </svg>
+                <!-- 原本的波浪圖片改為內嵌 SVG wave3-->
+                <svg viewBox="0 0 1440 320" class="wave wave3">
+                    <defs>
+                        <linearGradient id="waveGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#E5F6FA"/>  <!-- 上方顏色 -->
+                            <stop offset="100%" stop-color="#9ADEF1"/> <!-- 下方顏色 -->
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#waveGradient3)" fill-opacity="1" d="M0,192L60,208C120,224,240,256,360,261.3C480,267,600,245,720,218.7C840,192,960,160,1080,165.3C1200,171,1320,213,1380,234.7L1440,256V320H0Z"></path>
+                </svg>                
             </div>
         </div>
         <div class="section section2">

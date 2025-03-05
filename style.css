@@ -125,22 +125,30 @@ body, html {
     width: 100%;
     height: auto;
 }
+/* 確保波浪固定在畫面底部 */
 .wave {
     position: absolute;
-    bottom: 0;
+    bottom: 0; /* 波浪貼齊底部 */
+    left: 0;
     width: 100%;
     height: auto;
+    z-index: 1; /* 確保波浪位於背景最底層 */
 }
+
+/* 調整不同波浪的層級，讓它們交錯 */
 .wave1 {
-    z-index: 3;
+    z-index: 2;
+    opacity: 1; 
 }
 
 .wave2 {
-    z-index: 2;
+    z-index: 3;
+    opacity: 1;
 }
 
 .wave3 {
-    z-index: 1;
+    z-index: 4;
+    opacity: 1;
 }
 .section2 { 
     background-color: #9ADEF1; 
