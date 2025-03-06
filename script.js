@@ -41,19 +41,30 @@ gsap.from(".line-icon", {
     }
 });
 // 讓波浪產生變形動畫
-function animateWave(waveClass, duration, newPath) {
-    gsap.to(`${waveClass} path`, {
-        attr: { d: newPath }, // 修改 d 屬性，讓波浪形狀變化
-        duration: duration,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-    });
-}
+document.addEventListener("DOMContentLoaded", function() {
+    const wave1 = document.getElementById("wavePath1");
+    const wave2 = document.getElementById("wavePath2");
+    const wave3 = document.getElementById("wavePath3");
 
-// ✅ 修正的波浪動畫，讓變形範圍稍微變大
-animateWave(".wave1", 4, "M0,180L60,220C120,260,240,290,360,300C480,310,600,280,720,250C840,220,960,190,1080,180C1200,170,1320,210,1380,230L1440,250V480H0Z");
+    let t = 0; // 時間變數，控制波動
 
-animateWave(".wave2", 6, "M0,190L60,230C120,270,240,300,360,310C480,320,600,290,720,260C840,230,960,200,1080,190C1200,180,1320,220,1380,240L1440,260V480H0Z");
+    function updateWaves() {
+        t += 0.015; // 調整數值控制波動速度
+        wave1.setAttribute("d", generateWavePath(20, 180, 130, t)); // 幅度、波長、基線高度
+        wave2.setAttribute("d", generateWavePath(25, 220, 140, t + 0.8));
+        wave3.setAttribute("d", generateWavePath(30, 260, 150, t + 1.6));
+        requestAnimationFrame(updateWaves);
+    }
 
-animateWave(".wave3", 8, "M0,200L60,240C120,280,240,310,360,320C480,330,600,300,720,270C840,240,960,210,1080,200C1200,190,1320,230,1380,250L1440,270V480H0Z");
+    function generateWavePath(amplitude, wavelength, baseHeight, time) {
+        let path = `M0,${baseHeight}`;
+        for (let x = 0; x <= 1440; x += 5) { // 調整步進值
+            let y = baseHeight + amplitude * Math.sin((x / wavelength) + time);
+            path += ` L${x},${y}`;
+        }
+        path += ` L1440,320 L0,320 Z`; // 確保封閉
+        return path;
+    }
+
+    updateWaves();
+});
