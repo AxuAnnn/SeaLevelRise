@@ -41,13 +41,40 @@ gsap.from(".line-icon", {
     }
 });
 
-// 讓小船載浮載沉的動畫
+// 讓小船載浮載沉 + 左右搖擺
 gsap.to(".boat", {
-    y: -20,  // 向上 20px
-    rotation: 2, // 微小旋轉
+    y: -20,  // 上下浮動 20px
     duration: 3.5,  // 3.5 秒內完成
     repeat: -1,  // 無限循環
     yoyo: true,  // 來回運動
     ease: "power1.inOut"  // 平滑過渡
 });
+
+// 讓小船輕微左右搖擺
+gsap.to(".boat", {
+    rotate: 10,  // 往右傾斜 5 度
+    duration: 2.5,  // 2 秒完成
+    repeat: -1,  // 無限循環
+    yoyo: true,  // 來回擺動
+    ease: "power1.inOut"  // 平滑過渡
+});
+
+// 設定 paragraph 初始位置 (畫面底部)
+gsap.set(".paragraph", { y: "100vh", opacity: 0 });
+
+// 當滾動到 .section2 時，畫面定住，滾動控制 paragraph 往上
+gsap.to(".paragraph", {
+    y: 0,          // 讓文字回到正常位置
+    opacity: 1,    // 讓文字顯示
+    ease: "power2.out",
+    scrollTrigger: {
+        trigger: ".section2",
+        start: "top top",       // 當 .section2 的頂端碰到畫面頂端時觸發
+        end: "+=100%",          // 持續一整個視口的高度
+        scrub: true,            // 讓動畫隨滾動進行
+        pin: true,              // **固定 .section2**
+        anticipatePin: 1        // 確保固定時不會閃爍
+    }
+});
+
 

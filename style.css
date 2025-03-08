@@ -46,11 +46,11 @@ body, html {
 /* 船的圖層設定，位於最上層波浪下方 */
 .boat {
     position: absolute;
-    top: 2%;             /* 靠近畫面右上角的垂直位置 */
-    right: 15%;           /* 靠近畫面右上角的水平位置 */
-    width: 80px;           /* 船的大小，可依需求調整 */
+    top: 8%;             /* 靠近畫面右上角的垂直位置 */
+    right: 13%;           /* 靠近畫面右上角的水平位置 */
+    width: 90px;           /* 船的大小，可依需求調整 */
     height: auto;
-    z-index: 2;            /* 層級設定在 wave1 之下，其他波浪之上 */
+    z-index: 10;            /* 層級設定在 wave1 之下，其他波浪之上 */
 }
 .text-wrapper {
     display: flex;
@@ -124,7 +124,7 @@ body, html {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 80vh; /* 這裡你可以調整高度 */
+    height: 75vh; /* 這裡你可以調整高度 */
     background: linear-gradient(to top, #9ADEF1 0%, #9ADEF1 100%);
     z-index: 2; /* 高於波浪，但低於 text-wrapper */
 }
@@ -132,9 +132,9 @@ body, html {
 /* ✅ 波浪容器 */
 .waves {
     position: absolute;
-    bottom: 80vh; /* 讓波浪頂在底部色塊的上方 */
+    bottom: 75vh; /* 讓波浪頂在底部色塊的上方 */
     width: 100%;
-    height: 140px;
+    height: 130px;
     overflow: visible;
     z-index: 5;
 }
@@ -166,38 +166,6 @@ body, html {
     animation-duration: 13s;
 }
 
-/* ✅ 波浪個別設定 
-.wave {
-    position: absolute;
-    bottom: 45vh;
-    width: 200%;
-    height: auto;
-    animation: waveMove 8s linear infinite;
-    opacity: 1;
-}
-
-*調整波浪順序，確保交錯 
-.wave1 {
-    z-index: 3;
-    opacity: 1;
-    animation-duration: 6s;  *速度不同 
-    animation-delay: -1s;
-}
-
-.wave2 {
-    z-index: 4;
-    opacity: 1;
-    animation-duration: 8s;
-    animation-delay: -2s;
-}
-
-.wave3 {
-    z-index: 5;
-    opacity: 1;
-    animation-duration: 10s;
-    animation-delay: -3s;
-}
-*/
 .section2 { 
     background-color: #9ADEF1; 
     position: relative; /* 確保SVG圖能正確定位 */
