@@ -40,31 +40,14 @@ gsap.from(".line-icon", {
         });
     }
 });
-// 讓波浪產生變形動畫
-document.addEventListener("DOMContentLoaded", function() {
-    const wave1 = document.getElementById("wavePath1");
-    const wave2 = document.getElementById("wavePath2");
-    const wave3 = document.getElementById("wavePath3");
 
-    let t = 0; // 時間變數，控制波動
-
-    function updateWaves() {
-        t += 0.015; // 調整數值控制波動速度
-        wave1.setAttribute("d", generateWavePath(20, 180, 130, t)); // 幅度、波長、基線高度
-        wave2.setAttribute("d", generateWavePath(25, 220, 140, t + 0.8));
-        wave3.setAttribute("d", generateWavePath(30, 260, 150, t + 1.6));
-        requestAnimationFrame(updateWaves);
-    }
-
-    function generateWavePath(amplitude, wavelength, baseHeight, time) {
-        let path = `M0,${baseHeight}`;
-        for (let x = 0; x <= 1440; x += 5) { // 調整步進值
-            let y = baseHeight + amplitude * Math.sin((x / wavelength) + time);
-            path += ` L${x},${y}`;
-        }
-        path += ` L1440,320 L0,320 Z`; // 確保封閉
-        return path;
-    }
-
-    updateWaves();
+// 讓小船載浮載沉的動畫
+gsap.to(".boat", {
+    y: -20,  // 向上 20px
+    rotation: 2, // 微小旋轉
+    duration: 3.5,  // 3.5 秒內完成
+    repeat: -1,  // 無限循環
+    yoyo: true,  // 來回運動
+    ease: "power1.inOut"  // 平滑過渡
 });
+

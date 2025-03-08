@@ -46,40 +46,38 @@
             </div>                      
             <!-- ✅ 獨立的底部色塊 -->
             <div class="wave-background"></div>
-            <div class="waves">
-                <!-- 第一層波浪 -->
-                <svg class="wave wave1" viewBox="0 0 1440 290">
-                    <defs>
-                        <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#B6E2FF"/>  <!-- 上方顏色 -->
-                            <stop offset="100%" stop-color="#5DB4ED"/> <!-- 下方顏色 -->
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#waveGradient1)" d="" id="wavePath1"></path>
-                </svg>
-            
-                <!-- 第二層波浪 -->
-                <svg class="wave wave2" viewBox="0 0 1440 290">
-                    <defs>
-                        <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#96DEF2"/>  <!-- 上方顏色 -->
-                            <stop offset="100%" stop-color="#0E9AC3"/> <!-- 下方顏色 -->
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#waveGradient2)" d="" id="wavePath2"></path>
-                </svg>
-            
-                <!-- 第三層波浪 -->
-                <svg class="wave wave3" viewBox="0 0 1440 290">
-                    <defs>
-                        <linearGradient id="waveGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#E5F6FA" stop-opacity="0.9"/>  <!-- 上方顏色 -->
-                            <stop offset="100%" stop-color="#9ADEF1" stop-opacity="0.95"/> <!-- 下方顏色 -->
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#waveGradient3)" d="" id="wavePath3"></path>
-                </svg>
-            </div>                            
+        <!-- 波浪區塊 -->
+        <div class="waves">
+            <svg class="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+                <defs>
+                    <!-- 第一層波浪的漸層 -->
+                    <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#B6E2FF"/>  <!-- 上方顏色 -->
+                        <stop offset="100%" stop-color="#5DB4ED"/> <!-- 下方顏色 -->
+                    </linearGradient>
+                    
+                    <!-- 第二層波浪的漸層 -->
+                    <linearGradient id="gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#96DEF2"/>  <!-- 上方顏色 -->
+                        <stop offset="100%" stop-color="#0E9AC3"/> <!-- 下方顏色 -->
+                    </linearGradient>
+        
+                    <!-- 第三層波浪的漸層 -->
+                    <linearGradient id="gradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#E5F6FA"/>  <!-- 上方顏色 -->
+                        <stop offset="100%" stop-color="#9ADEF1"/> <!-- 下方顏色 -->
+                    </linearGradient>
+        
+                    <path id="wavePath" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#wavePath" x="48" y="0" fill="url(#gradient1)"/>
+                    <use xlink:href="#wavePath" x="48" y="3" fill="url(#gradient2)"/>
+                    <use xlink:href="#wavePath" x="48" y="5" fill="url(#gradient3)"/>
+                </g>
+            </svg>
+        </div>
+                                    
         </div>
         <div class="section section2">
             <img src="image/S2Bubble-left.svg" class="bubble-left" alt="Bubble Left">
