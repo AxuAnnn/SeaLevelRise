@@ -59,22 +59,52 @@ gsap.to(".boat", {
     ease: "power1.inOut"  // 平滑過渡
 });
 
-// 設定 paragraph 初始位置 (畫面底部)
-gsap.set(".paragraph", { y: "100vh", opacity: 0 });
+// ✅ **段落滾動效果**
+gsap.set(".paragraph", { y: "100vh" }); // **段落初始位置在畫面下方**
 
-// 當滾動到 .section2 時，畫面定住，滾動控制 paragraph 往上
 gsap.to(".paragraph", {
-    y: 0,          // 讓文字回到正常位置
-    opacity: 1,    // 讓文字顯示
-    ease: "power2.out",
+    y: 0, // 段落隨滾輪滑動到初始位置
+    ease: "none",
     scrollTrigger: {
         trigger: ".section2",
-        start: "top top",       // 當 .section2 的頂端碰到畫面頂端時觸發
-        end: "+=100%",          // 持續一整個視口的高度
-        scrub: true,            // 讓動畫隨滾動進行
-        pin: true,              // **固定 .section2**
-        anticipatePin: 1        // 確保固定時不會閃爍
+        start: "top top", // **section2 滿版時固定**
+        end: "top top-=50%", // **固定更久才解除**
+        scrub: true, // **滾輪控制動畫**
+        pin: ".section2", // **固定 section2**
+        anticipatePin: 1 // **避免 GSAP 計算錯誤**
     }
 });
+// **確保 Section 3 貼合**
+gsap.set(".section3", { marginTop: "-1px" }); // ✅ **手動修正縫隙**
 
+// ✅ **字卡淡入效果**
+gsap.set(".card-container", { opacity: 0, y: 50 }); // **初始狀態：隱藏且位於下方**
 
+gsap.to(".card-container", {
+    opacity: 1,  // **淡入**
+    y: 0,  // **從下方浮現**
+    ease: "power2.out",
+    duration: 1.5, // **淡入時間**
+    scrollTrigger: {
+        trigger: ".section3",
+        start: "top top",  // **當 section3 完全填滿畫面時開始淡入**
+        end: "top top",    // **這裡設相同，確保動畫只有一次**
+        toggleActions: "play none none reverse"  // **滾輪往回滾動時動畫反向**
+    }
+});
+// 數字動畫
+let numberAnimation = { value: 490 }; // 設定初始數值
+
+gsap.to(numberAnimation, {
+    value: 571, // 目標數字
+    duration: 3, // 動畫時間，可調整
+    ease: "power2.out", // 平滑動畫
+    onUpdate: function () {
+        document.querySelector(".highlight-number").innerText = Math.floor(numberAnimation.value);
+    },
+    scrollTrigger: {
+        trigger: ".section4",
+        start: "top center", // 當 section4 滿版一半時觸發
+        toggleActions: "play none none reverse" 
+    }
+});

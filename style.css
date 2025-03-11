@@ -215,7 +215,7 @@ body, html {
     transform: translateX(-50%);
     display: flex;
     gap: 60px;
-    z-index: 4; /* 提高層級，確保字卡在最上層 */
+    z-index: 10; /* 提高層級，確保字卡在最上層 */
 }
 
 /* 單張字卡樣式 */
@@ -251,7 +251,7 @@ body, html {
     right: 40px;       /* 距離右側 40px */
     width: calc(100% - 80px); /* 確保距離左右各 40px */
     height: auto;
-    z-index: 3;        /* 圖層位置確保不被其他元素覆蓋 */
+    z-index: 5;        /* 圖層位置確保不被其他元素覆蓋 */
 }
 /* Section 4 背景區塊 */
 .section4 {
@@ -732,9 +732,18 @@ body, html {
 .section8 .wave3 {
     z-index: 1; /* 最底層波浪 */
 }
-
+/* 動畫效果 */
 /* ✅ 波浪動畫效果 */
 @keyframes move-forever {
     0% { transform: translate3d(-90px,0,0); }
     100% { transform: translate3d(85px,0,0); }
 }
+/* ✅ 字卡動畫效果 */
+.card {
+    transition: transform 0.3s ease-in-out; /* 平滑變大效果 */
+}
+
+.card:hover {
+    transform: scale(1.1); /* 整個字卡變大 10% */
+}
+
