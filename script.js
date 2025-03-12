@@ -92,19 +92,112 @@ gsap.to(".card-container", {
         toggleActions: "play none none reverse"  // **滾輪往回滾動時動畫反向**
     }
 });
-// 數字動畫
-let numberAnimation = { value: 490 }; // 設定初始數值
 
-gsap.to(numberAnimation, {
-    value: 571, // 目標數字
-    duration: 3, // 動畫時間，可調整
-    ease: "power2.out", // 平滑動畫
-    onUpdate: function () {
-        document.querySelector(".highlight-number").innerText = Math.floor(numberAnimation.value);
-    },
-    scrollTrigger: {
-        trigger: ".section4",
-        start: "top center", // 當 section4 滿版一半時觸發
-        toggleActions: "play none none reverse" 
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    const data = [
+        { name: "電力", value: 0.26, color: "#8979FF" },
+        { name: "交通", value: 0.15, color: "#0099FF" },
+        { name: "產業", value: 0.11, color: "#27C4E4" },
+        { name: "石化生產", value: 0.10, color: "#A0B6F5" },
+        { name: "建築", value: 0.06, color: "#5C89FF" },
+        { name: "農林業", value: 0.18, color: "#9AACFF" },
+        { name: "其他", value: 0.14, color: "#3C8DEA" }
+    ];
+
+    const width = 500, height = 500, radius = Math.min(width, height) / 2;
+
+    const svg = d3.select("#doughnutChart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    // ✅ **圓餅圖設定**
+    const pie = d3.pie()
+        .sort(null)
+        .startAngle(0)  // ✅ **從12點開始繪製**
+        .endAngle(Math.PI * 2)   // ✅ **完整圓**
+        .value(d => d.value * 100); 
+
+    const arc = d3.arc()
+        .innerRadius(radius * 0.4) 
+        .outerRadius(radius);
+
+    const arcLabel = d3.arc()
+        .innerRadius(radius * 0.6)  // ✅ **讓標籤更靠近圓心**
+        .outerRadius(radius * 0.8);
+
+    const path = svg.selectAll("path")
+        .data(pie(data))
+        .enter()
+        .append("path")
+        .attr("fill", d => d.data.color)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", "2px")
+        .each(function (d) { this._current = { startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 }; });
+
+    // ✅ **圓餅圖展開動畫**
+    path.transition()
+        .duration(2000)
+        .delay((d, i) => i * 200)
+        .attrTween("d", function (d) {
+            const interpolate = d3.interpolate(
+                { startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 },
+                d
+            );
+            return function (t) {
+                return arc(interpolate(t));
+            };
+        })
+        .on("end", function (_, i) {
+            // ✅ **當最後一塊圓餅完成後才顯示文字**
+            if (i === data.length - 1) {
+                text.transition()
+                    .duration(1000)
+                    .attr("opacity", 1);
+            }
+        });
+
+    // ✅ **文字標籤，先隱藏**
+    const text = svg.selectAll("text")
+        .data(pie(data))
+        .enter()
+        .append("text")
+        .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "middle")
+        .attr("fill", "#FFFFFF")
+        .attr("font-size", "16px")
+        .attr("font-weight", "800")
+        .attr("opacity", 0)  // ✅ 先隱藏，等動畫結束後才出現
+        .text(d => d.data.name);
+
+    // ✅ **滾動觸發動畫**
+    gsap.from("#doughnutChart", {
+        opacity: 0,
+        scale: 0.5,
+        duration: 1.5,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".section4",
+            toggleActions: "play reverse play reverse",
+        }
+    });
+
+    // ✅ **數字動畫**
+    let numberAnimation = { value: 490 }; // 初始數值
+    gsap.to(numberAnimation, {
+        value: 571, // 目標數值
+        duration: 2, // 動畫時間
+        ease: "power2.out",
+        onUpdate: function () {
+            document.querySelector(".highlight-number").innerText = Math.floor(numberAnimation.value);
+        },
+        scrollTrigger: {
+            trigger: ".section4",
+            start: "top center",
+            toggleActions: "play none none reverse"
+        }
+    });
 });

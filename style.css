@@ -286,9 +286,8 @@ body, html {
     z-index: 5; /* 確保圖片在最上層 */
 }
 
-.info-icon img {
-    width: 100%; /* 確保圖片填滿區塊 */
-    height: auto;
+#doughnutChart {
+    margin: auto;
 }
 
 /* 右側文字區塊 */
