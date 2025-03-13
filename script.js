@@ -1,5 +1,7 @@
 // 確保 GSAP 和 ScrollTrigger 正確載入
 gsap.registerPlugin(ScrollTrigger);
+// ✅ 讓 info-card-container 可以左右拖移
+gsap.registerPlugin(Draggable);
 
 // 初始淡入 text-wrapper，並同時啟動 bubble-left 和 bubble-right 的動畫
 gsap.from(".text-wrapper", {
@@ -110,24 +112,28 @@ document.addEventListener("DOMContentLoaded", function () {
         .append("svg")
         .attr("width", width)
         .attr("height", height)
+        .attr("viewBox", "0 0 500 500") // ✅ **確保不縮小**
+        .style("overflow", "visible")  // ✅ **防止 hover 放大時被裁切**
         .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+        .attr("transform", `translate(${width / 2}, ${height / 2})`)
+        .style("opacity", 0);
 
     // ✅ **圓餅圖設定**
     const pie = d3.pie()
         .sort(null)
-        .startAngle(0)  // ✅ **從12點開始繪製**
-        .endAngle(Math.PI * 2)   // ✅ **完整圓**
-        .value(d => d.value * 100); 
+        .startAngle(-Math.PI / 2)
+        .endAngle(Math.PI * 1.5)
+        .value(d => d.value * 100);
 
     const arc = d3.arc()
-        .innerRadius(radius * 0.4) 
+        .innerRadius(radius * 0.4)
         .outerRadius(radius);
 
     const arcLabel = d3.arc()
-        .innerRadius(radius * 0.6)  // ✅ **讓標籤更靠近圓心**
+        .innerRadius(radius * 0.6)
         .outerRadius(radius * 0.8);
 
+    // ✅ **加入圓餅圖區塊**
     const path = svg.selectAll("path")
         .data(pie(data))
         .enter()
@@ -135,31 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("fill", d => d.data.color)
         .attr("stroke", "#fff")
         .attr("stroke-width", "2px")
+        .style("pointer-events", "all") // ✅ **確保 hover 可偵測**
         .each(function (d) { this._current = { startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 }; });
 
-    // ✅ **圓餅圖展開動畫**
-    path.transition()
-        .duration(2000)
-        .delay((d, i) => i * 200)
-        .attrTween("d", function (d) {
-            const interpolate = d3.interpolate(
-                { startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 },
-                d
-            );
-            return function (t) {
-                return arc(interpolate(t));
-            };
-        })
-        .on("end", function (_, i) {
-            // ✅ **當最後一塊圓餅完成後才顯示文字**
-            if (i === data.length - 1) {
-                text.transition()
-                    .duration(1000)
-                    .attr("opacity", 1);
-            }
-        });
-
-    // ✅ **文字標籤，先隱藏**
+    // ✅ **標籤文字（先隱藏）**
     const text = svg.selectAll("text")
         .data(pie(data))
         .enter()
@@ -170,34 +155,264 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("fill", "#FFFFFF")
         .attr("font-size", "16px")
         .attr("font-weight", "800")
-        .attr("opacity", 0)  // ✅ 先隱藏，等動畫結束後才出現
+        .attr("opacity", 0)
         .text(d => d.data.name);
 
+    // ✅ **數字動畫**
+    let numberAnimation = { value: 490 };
+
     // ✅ **滾動觸發動畫**
-    gsap.from("#doughnutChart", {
-        opacity: 0,
-        scale: 0.5,
-        duration: 1.5,
-        ease: "power2.out",
-        scrollTrigger: {
-            trigger: ".section4",
-            toggleActions: "play reverse play reverse",
+    ScrollTrigger.create({
+        trigger: ".section4",
+        start: "top center",
+        once: true, // ✅ **確保圓餅圖動畫只執行一次**
+        onEnter: () => {
+            gsap.to(svg.node(), { opacity: 1, duration: 1 });
+
+            path.transition()
+                .duration(1000)
+                .delay((d, i) => i * 100)
+                .attrTween("d", function (d) {
+                    const interpolate = d3.interpolate(
+                        { startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 },
+                        d
+                    );
+                    return function (t) {
+                        return arc(interpolate(t));
+                    };
+                })
+                .on("end", function (_, i) {
+                    if (i === data.length - 1) {
+                        text.transition()
+                            .duration(1000)
+                            .attr("opacity", 1);
+                    }
+                });
         }
     });
 
-    // ✅ **數字動畫**
-    let numberAnimation = { value: 490 }; // 初始數值
-    gsap.to(numberAnimation, {
-        value: 571, // 目標數值
-        duration: 2, // 動畫時間
-        ease: "power2.out",
-        onUpdate: function () {
-            document.querySelector(".highlight-number").innerText = Math.floor(numberAnimation.value);
+    // ✅ **數字動畫（每次滾動到 `.section4` 重新播放）**
+    ScrollTrigger.create({
+        trigger: ".section4",
+        start: "top center",
+        toggleActions: "play none none reverse", // ✅ **每次滾動觸發**
+        onEnter: () => {
+            gsap.to(".highlight-number", { opacity: 1, duration: 0.5 }); // ✅ **確保數字可見**
+            numberAnimation.value = 490; // ✅ **重置數字**
+            gsap.to(numberAnimation, {
+                value: 571,
+                duration: 2,
+                ease: "power2.out",
+                onUpdate: function () {
+                    document.querySelector(".highlight-number").innerText = Math.floor(numberAnimation.value);
+                }
+            });
         },
-        scrollTrigger: {
-            trigger: ".section4",
-            start: "top center",
-            toggleActions: "play none none reverse"
+        onLeaveBack: () => {
+            gsap.to(".highlight-number", { opacity: 0, duration: 0.5 }); // ✅ **滾回去時隱藏數字**
         }
     });
+
+
+
+    // ✅ **加入 Hover 效果**
+    path.on("mouseover", function (event, d) {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr("transform", "scale(1.2)") // ✅ **放大 1.2 倍**
+            .style("cursor", "pointer");
+
+        text.filter(t => t.index === d.index)
+            .transition()
+            .duration(200)
+            .attr("font-size", "20px")  // ✅ **變大**
+            .attr("fill", "#FFFFFF")  // ✅ **變回白色**
+            .text(`${(d.data.value * 100).toFixed(1)}%`);  // ✅ **變成百分比**
+    });
+
+    path.on("mouseout", function (event, d) {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr("transform", "scale(1)") // ✅ **恢復正常大小**
+            .style("cursor", "default");
+
+        text.filter(t => t.index === d.index)
+            .transition()
+            .duration(200)
+            .attr("font-size", "16px")  // ✅ **變回原大小**
+            .attr("fill", "#FFFFFF")  // ✅ **變回白色**
+            .text(d.data.name);  // ✅ **恢復類別名稱**
+    });
 });
+
+gsap.to(".triangle", {
+    y: -10, // 上下浮動 15px
+    duration: 1, // 
+    repeat: -1, // 無限循環
+    yoyo: true, // 來回運動
+    ease: "power1.inOut" // 平滑過渡
+});
+gsap.to(".blobs-svg1", {
+    rotation: 360,  // 旋轉 360 度
+    duration: 20,    // 8 秒完成一圈
+    repeat: -1,     // 無限循環
+    ease: "linear"  // 線性旋轉，確保均勻轉動
+});
+
+gsap.to(".blobs-svg2", {
+    rotation: -360, // 反方向旋轉
+    duration: 15,   // 10 秒完成一圈（比 blobs-svg1 慢）
+    repeat: -1,
+    ease: "linear"
+});
+
+gsap.to(".blobs-svg3", {
+    rotation: 360,  // 順時針旋轉
+    duration: 20,   // 12 秒完成一圈（最慢，營造層次感）
+    repeat: -1,
+    ease: "linear"
+});
+
+// ✅ 選取 section4、5、6
+const sections = gsap.utils.toArray(".horizontal-sections .section");
+
+// ✅ 計算最大水平寬度
+let maxWidth = 0;
+const getMaxWidth = () => {
+    maxWidth = 0;
+    sections.forEach((section) => {
+        maxWidth += section.offsetWidth;
+    });
+};
+getMaxWidth();
+ScrollTrigger.addEventListener("refreshInit", getMaxWidth);
+
+
+// ✅ 讓 section4 → section5 → section6 **水平滑動**，不允許垂直滾動
+gsap.to(".horizontal-wrapper", {
+    x: () => `-${maxWidth - window.innerWidth}`,  // ✅ 只讓 section6 滿版
+    ease: "none",
+    scrollTrigger: {
+        trigger: ".horizontal-wrapper",
+        pin: true, // ✅ 固定 section4、5、6，不能往下滾
+        scrub: true,
+        end: () => `+=${maxWidth}`,
+        invalidateOnRefresh: true
+    }
+});
+
+// ✅ **確保 section6 滿版後，才能往 section7 滾動**
+ScrollTrigger.create({
+    trigger: ".section6",
+    start: () => `left center`, // ✅ 當 section6 完全填滿畫面時
+    end: "right center",
+    onEnter: () => {
+        ScrollTrigger.refresh(); // ✅ **允許正常滾動到 section7**
+    }
+});
+
+// ✅ 讓 `.circle-item` 隨機上下左右晃動
+document.querySelectorAll(".circle-item img").forEach((img, index) => {
+    gsap.to(img, {
+        x: () => gsap.utils.random(-15, 15),  // 左右晃動範圍
+        y: () => gsap.utils.random(-15, 15),  // 上下晃動範圍
+        duration: 2,  // 動畫時間
+        repeat: -1,  // 無限循環
+        yoyo: true,  // 來回擺動
+        ease: "power1.inOut"
+    });
+});
+
+// ✅ **讓 `.circle-text` 初始時隱藏**
+gsap.set(".circle-text", { opacity: 0, scale: 0 });
+
+// ✅ **點擊 `.circle-item` 時，讓 `.circle-text` 顯示**
+document.querySelectorAll(".circle-item").forEach(item => {
+    item.addEventListener("click", function () {
+        // 先隱藏所有 `.circle-text`
+        gsap.to(".circle-text", { opacity: 0, scale: 0, duration: 0.3 });
+
+        // 只顯示當前點擊的 `.circle-text`
+        let text = this.querySelector(".circle-text");
+        gsap.to(text, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" });
+    });
+});
+// ✅ **點擊 `.view-more-btn` 時，讓 `.card-text` 顯示**
+document.querySelectorAll(".view-more-btn").forEach(button => {
+    button.addEventListener("click", function() {
+        let text = this.nextElementSibling;
+        gsap.set(text, { clipPath: "inset(0% 0% 100% 0%)", opacity: 0, height: "auto" });
+        gsap.to(text, { 
+            clipPath: "inset(0% 0% 0% 0%)", // 逐漸展開
+            opacity: 1, 
+            duration: 0.8, 
+            ease: "power2.out"
+        });
+        this.style.display = "none";
+    });
+});
+
+// ✅ 選取 `.info-card-container`
+const cardContainer = document.querySelector(".info-card-container");
+const wrapper = document.querySelector(".info-card-wrapper");
+
+// ✅ 計算最大拖動範圍
+const updateBounds = () => {
+    const wrapperWidth = wrapper.offsetWidth; // 可視範圍寬度
+    const containerWidth = cardContainer.scrollWidth; // 整個卡片區的寬度
+    const maxDrag = wrapperWidth - containerWidth - 40; // ✅ 限制拖動範圍
+
+    return { minX: maxDrag, maxX: 0 };
+};
+
+// ✅ section7文字淡入
+gsap.to(".question-container", {
+    opacity: 1,
+    x: 0,  // 移動回原位
+    duration: 5,
+    ease: "power2.out",
+    scrollTrigger: {
+        trigger: ".section7",
+        start: "top 70%",
+        end: "top 50%",
+        toggleActions: "play none none reverse"
+    }
+});
+
+// ✅ 啟動 Draggable，並設定邊界
+Draggable.create(cardContainer, {
+    type: "x",
+    bounds: updateBounds(),
+    inertia: true,
+    edgeResistance: 0.9,
+    cursor: "grab",
+    onPress: function () {
+        this.target.style.cursor = "grabbing";
+    },
+    onRelease: function () {
+        this.target.style.cursor = "grab";
+    },
+    onDrag: function () {
+        updateMaskVisibility();
+    }
+});
+
+// ✅ 當視窗大小改變時，重新計算邊界
+window.addEventListener("resize", () => {
+    Draggable.get(cardContainer).applyBounds(updateBounds());
+    updateMaskVisibility();
+});
+
+// ✅ 更新遮罩的顯示狀態
+const updateMaskVisibility = () => {
+    const translateX = gsap.getProperty(cardContainer, "x"); // 取得當前 X 位置
+    const bounds = updateBounds();
+
+    document.querySelector(".info-card-wrapper::before").style.opacity = translateX < 0 ? "1" : "0";
+    document.querySelector(".info-card-wrapper::after").style.opacity = translateX > bounds.minX ? "1" : "0";
+};
+
+updateMaskVisibility();
+

@@ -7,6 +7,7 @@
 body, html {
     height: 100%;
 }
+
 .section {
     width: 100%;
     height: 100vh;
@@ -19,9 +20,8 @@ body, html {
     position: relative;
 }
 .section1 { 
-    /*background-color: #FF5733;*/
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
 }
 /* 左側氣泡圖設定 */
 .bubble-left {
@@ -253,10 +253,39 @@ body, html {
     height: auto;
     z-index: 5;        /* 圖層位置確保不被其他元素覆蓋 */
 }
+/* ✅ 這個容器包裹 section4、section5、section6，讓它們水平移動 */
+.horizontal-wrapper {
+    width: 300vw; /* 三個區塊佔滿寬度 */
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+/* ✅ 讓 section4、section5、section6 橫向排列 */
+.horizontal-sections {
+    display: flex;
+    flex-direction: row;
+    width: 300vw; /* 讓三個 section 串起來 */
+    height: 100vh;
+    transform: translateX(0); /* 初始時 section4 保持原位 */
+}
+/* ✅ 讓 section4、5、6 水平排列 */
+.section {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    position: relative;
+}
 /* Section 4 背景區塊 */
 .section4 {
     background-color: #9ADEF1;
     position: relative;
+    z-index: 50; /* ✅ 確保 section5 在上方 */
 }
 
 .section4 .background-box {
@@ -329,14 +358,18 @@ body, html {
     font-weight: 500;
 }
 
-.section5 { 
-    background-color: #9ADEF1; 
-    position: relative;
+/* ✅ section5 初始位置設置在 section4 右側 */
+.section5 {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    z-index: 50; /* ✅ 確保在 section4 上方 */
+    background-color: #9ADEF1; 
 }
+
 /* 反白文字區塊（獨立位置） */
 .sea-level-container {
     position: absolute;
@@ -433,18 +466,21 @@ body, html {
     font-size: 2.5rem; /* 可調整 mm 字體大小 */
     font-weight: 700; /* 可調整字重 */
 }
-/* Section 6 設定 */
+/* ✅ section6 初始位置設置在 section5 右側 */
 .section6 {
-    background-color: #9ADEF1; /* 背景色，可調整 */
-    position: relative;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    z-index: 50; /* ✅ 確保 section6 在 section5 上方 */
+    background-color: #9ADEF1;  /* 測試顏色 */
 }
 /* 反白文字區塊（獨立位置） */
 .sea-impact-container {
     position: absolute;
-    top: 3%; /* 可調整文字區塊位置 */
+    top: 5%; /* 可調整文字區塊位置 */
     left: 50%;
     transform: translateX(-50%);
     z-index: 5; /* 確保在最上層 */
@@ -515,15 +551,22 @@ body, html {
     color: #246D9D; /* 預設文字顏色 */
     padding: 5px 10px; /* 內距確保文字不貼邊 */
 }
-
+/* ✅ section7 和 section8 必須壓在最下面，讓 section6 後面直接進入 section7 */
+.vertical-wrapper {
+    position: relative;
+    width: 100vw;
+}
 /* Section 7 設定 */
 .section7 {
     background-color: white; /* 背景色，可調整 */
     position: relative;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden; /* 隱藏超出範圍的資訊卡 */
+    z-index: 70;
 }
 /* 反白文字區塊（獨立位置） */
 .section7 .question-container {
@@ -552,23 +595,56 @@ body, html {
     z-index: 3; /* 確保在最上層 */
 }
 /* 資訊卡容器 (橫向排列，包含 5 個卡片) */
+.info-card-wrapper {
+    position: relative;
+    width: 90%; /* ✅ 限制拖移範圍 */
+    margin: 0 auto; /* ✅ 讓它保持置中 */
+    overflow: hidden; /* ✅ 確保卡片區域超出的部分不會顯示 */
+    padding: 50px 0; /* ✅ 上下增加 50px 的距離 */
+}
+/* ✅ 確保資訊卡能夠左右拖移 */
 .info-card-container {
-    position: absolute;
-    top: 35%; /* 可調整上下位置 */
-    left: 50px; /* 可調整左右位置 */
     display: flex;
-    flex-direction: row; /* 讓卡片橫向排列 */
-    gap: 60px; /* 卡片間距，可調整 */
-    z-index: 4;
+    flex-direction: row;
+    gap: 60px; /* ✅ 卡片間距 */
+    cursor: grab;
+    user-select: none;
+    padding: 0 1%; /* ✅ 讓左右側有 5% 空間 */
+    position: relative;
+    transition: transform 0.3s ease-out; /* ✅ 讓移動更流暢 */
+}
+/* ✅ 左側遮罩 */
+.info-card-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px; /* ✅ 遮罩寬度 */
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    z-index: 2;
+    pointer-events: none;
 }
 
+/* ✅ 右側遮罩 */
+.info-card-wrapper::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 80px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    z-index: 2;
+    pointer-events: none;
+}
 /* 單個資訊卡 */
 .info-card {
     position: relative;
     display: flex;
     flex-direction: column; /* 調整為垂直排列 */
     align-items: center; /* 置中對齊 */
-    background-color: white;
+    background-color: #E5F6FA;
     padding: 20px;
     border-radius: 10px;
     width: 400px; /* 可調整區塊大小 */
@@ -632,13 +708,33 @@ body, html {
     width: 100%; /* 讓內文根據父元素自動換行 */
     word-wrap: break-word;
     overflow-wrap: break-word;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease, height 0.5s ease;
 }
-/* 反白文字區塊（獨立位置） */
-.section7 .question-container {
+.view-more-btn {
+    background-color: #246D9D;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.view-more-btn:hover {
+    background-color: #1b5678;
+}
+.question-container {
     position: absolute;
-    top: 3%; /* 可調整文字區塊位置 */
-    left: 10%; /* 可調整距離 */
-    z-index: 5; /* 提高層級，確保文字在最上層 */
+    opacity: 0;  /* 預設隱藏 */
+    transform: translateX(-10px); /* 預設往左偏移 */
+    top: 3%; /* 讓它稍微靠上 */
+    left: 10%;
+    z-index: 5; /* ✅ 確保在最上層 */
 }
 
 .question-text {
@@ -680,9 +776,13 @@ body, html {
 .section8 {
     background-color: white; /* 背景色，可調整 */
     position: relative;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 70;
 }
 
 /* 反白文字區塊（獨立位置） */
@@ -691,7 +791,7 @@ body, html {
     top: 45%; /* 可調整文字區塊位置 */
     left: 52%;
     transform: translateX(-50%);
-    z-index: 10; /* 提高層級，確保文字在最上層 */
+    z-index: 20; /* 提高層級，確保文字在最上層 */
 }
 
 .sea-action-text {
@@ -703,34 +803,84 @@ body, html {
     text-align: center;
     display: inline-block; /* 讓背景根據內容調整 */
 }
+/* ✅ 按鈕樣式 */
+.action-button {
+    display: block;
+    margin: 20px auto 0; /* 與文字保持適當間距，水平置中 */
+    padding: 12px 24px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: white;
+    background-color: #246D9D; /* 深藍色按鈕 */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
 
-/* 波浪圖片容器，確保 3 張圖片可以疊放在正中央 */
-.section8 .waves {
+/* ✅ 按鈕懸停效果 */
+.action-button:hover {
+    background-color: #1b5678;
+    transform: scale(1.05); /* 微放大 */
+}
+
+/* ✅ 按鈕點擊效果 */
+.action-button:active {
+    background-color: #154a68;
+    transform: scale(0.98);
+}
+
+/* ✅ 色塊（底部背景，讓波浪頂在上方） */
+.wave-background {
     position: absolute;
-    bottom: 0; /* 靠齊底部 */
+    bottom: 0;
     width: 100%;
-    height: auto;
+    height: 80vh; /* ✅ 調整色塊高度，可變更 */
+    background: linear-gradient(to top, #9ADEF1 0%, #9ADEF1 100%); /* ✅ 色塊顏色 */
+    z-index: 2; /* ✅ 確保波浪在色塊之上 */
 }
-
-/* 疊放的波浪 SVG 圖片樣式 */
-.section8 .wave {
+/* ✅ 波浪容器 */
+.wave-container {
     position: absolute;
-    bottom: 0; /* 靠齊底部 */
+    top: auto;  /* ✅ 讓它依靠 bottom 定位 */
+    bottom: 80vh;  /* ✅ 確保波浪貼著色塊 */
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 130px;  /* ✅ 確保波浪有足夠高度 */
+    overflow: visible;
+    z-index: 10;  /* ✅ 確保波浪可見 */
+    pointer-events: none; /* ✅ 防止影響滑鼠操作 */
+    background-color: transparent;
 }
 
-.section8 .wave1 {
-    z-index: 3; /* 最上層波浪 */
+/* ✅ 波浪 SVG */
+.wave-svg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    bottom: 0; /* ✅ 確保波浪與色塊無縫銜接 */
 }
 
-.section8 .wave2 {
-    z-index: 2; /* 中間層波浪 */
+/* 讓波浪動畫流動 */
+.parallax > use {
+    animation: move-forever 20s cubic-bezier(.55,.5,.45,.5) infinite;
 }
 
-.section8 .wave3 {
-    z-index: 1; /* 最底層波浪 */
+.parallax > use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
 }
+
+.parallax > use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+
+.parallax > use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+}
+
 /* 動畫效果 */
 /* ✅ 波浪動畫效果 */
 @keyframes move-forever {
