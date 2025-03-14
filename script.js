@@ -410,9 +410,50 @@ const updateMaskVisibility = () => {
     const translateX = gsap.getProperty(cardContainer, "x"); // 取得當前 X 位置
     const bounds = updateBounds();
 
-    document.querySelector(".info-card-wrapper::before").style.opacity = translateX < 0 ? "1" : "0";
-    document.querySelector(".info-card-wrapper::after").style.opacity = translateX > bounds.minX ? "1" : "0";
+    const wrapper = document.querySelector(".info-card-wrapper");
+
+    if (!wrapper) {
+        console.error("❌ 找不到 .info-card-wrapper，請檢查 HTML");
+        return; // 找不到時，直接跳出函式
+    }
+
+    // ✅ 改成操作 wrapper，不要用 `::before` 和 `::after`
+    wrapper.style.setProperty("--left-mask-opacity", translateX < 0 ? "1" : "0");
+    wrapper.style.setProperty("--right-mask-opacity", translateX > bounds.minX ? "1" : "0");
 };
 
-updateMaskVisibility();
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const waveBackgroundRect = document.querySelector(".wave-background-rect");
+    const waveContainer = document.querySelector(".wave-container");
+    const actionButton = document.querySelector(".action-button");
+
+    if (!waveBackgroundRect || !waveContainer || !actionButton) {
+        console.error("❌ 找不到 wave-background-rect 或 wave-container 或 action-button");
+        return;
+    }
+
+    let waveHeight = 80; // 初始高度 80vh
+    let minHeight = 20;  // 最小高度 20vh
+
+    actionButton.addEventListener("click", function () {
+        if (waveHeight > minHeight) {
+            waveHeight -= 1;
+
+            // ✅ 更新 SVG 色塊的高度 & 位置
+            waveBackgroundRect.setAttribute("height", waveHeight);
+            waveBackgroundRect.setAttribute("y", 100 - waveHeight); // 確保色塊從底部縮小
+
+            // ✅ 讓波浪也同步下降
+            waveContainer.style.bottom = `${waveHeight}vh`;
+
+            console.log(`✅ 變更成功！目前色塊 & 波浪高度：${waveHeight}vh`);
+        } else {
+            console.log("⏹️ 已達最小高度 20vh，無法再降低！");
+        }
+    });
+});
+
+
 

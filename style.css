@@ -792,6 +792,10 @@ body, html {
     left: 52%;
     transform: translateX(-50%);
     z-index: 20; /* 提高層級，確保文字在最上層 */
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 置中對齊 */
+    text-align: center; /* 文字置中 */
 }
 
 .sea-action-text {
@@ -805,17 +809,16 @@ body, html {
 }
 /* ✅ 按鈕樣式 */
 .action-button {
-    display: block;
-    margin: 20px auto 0; /* 與文字保持適當間距，水平置中 */
-    padding: 12px 24px;
-    font-size: 1.4rem;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: white;
-    background-color: #246D9D; /* 深藍色按鈕 */
+    background-color: #246D9D;
     border: none;
-    border-radius: 20px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.3s;
 }
 
 /* ✅ 按鈕懸停效果 */
@@ -830,15 +833,22 @@ body, html {
     transform: scale(0.98);
 }
 
-/* ✅ 色塊（底部背景，讓波浪頂在上方） */
-.wave-background {
+/* ✅ SVG 色塊 */
+.wave-background-svg {
     position: absolute;
     bottom: 0;
+    left: 0;
     width: 100%;
-    height: 80vh; /* ✅ 調整色塊高度，可變更 */
-    background: linear-gradient(to top, #9ADEF1 0%, #9ADEF1 100%); /* ✅ 色塊顏色 */
-    z-index: 2; /* ✅ 確保波浪在色塊之上 */
+    height: 100vh; /* ✅ 整個畫面高度，讓 `<rect>` 來控制內部色塊 */
+    z-index: 2; /* ✅ 確保波浪在色塊上層 */
+    pointer-events: none; /* ✅ 防止干擾點擊事件 */
 }
+
+/* ✅ 可變動的色塊 */
+.wave-background-rect {
+    transition: height 0.3s ease, y 0.3s ease; /* ✅ 讓變化更平滑 */
+}
+
 /* ✅ 波浪容器 */
 .wave-container {
     position: absolute;
