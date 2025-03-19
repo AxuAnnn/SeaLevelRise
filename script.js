@@ -96,6 +96,7 @@ gsap.to(".card-container", {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    let isAnimating = true; // 🔹 **動畫進行中，避免 hover 影響**
     const data = [
         { name: "電力", value: 0.26, color: "#8979FF" },
         { name: "交通", value: 0.15, color: "#0099FF" },
@@ -186,8 +187,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         text.transition()
                             .duration(1000)
                             .attr("opacity", 1);
+            
+                        isAnimating = false; // 🔹 **動畫結束，允許 hover**
                     }
                 });
+        
+        // ✅ **確保滾動動畫覆蓋 Hover 動畫**
+        gsap.to(path.nodes(), { scale: 1, duration: 0.5, overwrite: true });
         }
     });
 
@@ -215,36 +221,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    // ✅ **加入 Hover 效果**
+    // ✅ **加入 Hover 效果，防止 hover 卡住動畫**
     path.on("mouseover", function (event, d) {
+        if (isAnimating) return; // 🔹 **如果動畫未完成，直接 return，不執行 hover 效果**
+    
         d3.select(this)
             .transition()
             .duration(200)
-            .attr("transform", "scale(1.2)") // ✅ **放大 1.2 倍**
+            .attr("transform", "scale(1.2)")
             .style("cursor", "pointer");
-
+    
         text.filter(t => t.index === d.index)
             .transition()
             .duration(200)
-            .attr("font-size", "20px")  // ✅ **變大**
-            .attr("fill", "#FFFFFF")  // ✅ **變回白色**
-            .text(`${(d.data.value * 100).toFixed(1)}%`);  // ✅ **變成百分比**
+            .attr("font-size", "20px")
+            .attr("fill", "#FFFFFF")
+            .text(`${(d.data.value * 100).toFixed(1)}%`);
     });
+    
 
     path.on("mouseout", function (event, d) {
+        if (isAnimating) return; // 🔹 **動畫未完成時，略過 hover 效果**
+    
         d3.select(this)
             .transition()
             .duration(200)
-            .attr("transform", "scale(1)") // ✅ **恢復正常大小**
+            .attr("transform", "scale(1)")
             .style("cursor", "default");
-
+    
         text.filter(t => t.index === d.index)
             .transition()
             .duration(200)
-            .attr("font-size", "16px")  // ✅ **變回原大小**
-            .attr("fill", "#FFFFFF")  // ✅ **變回白色**
-            .text(d.data.name);  // ✅ **恢復類別名稱**
+            .attr("font-size", "16px")
+            .attr("fill", "#FFFFFF")
+            .text(d.data.name);
     });
+    
 });
 
 gsap.to(".triangle", {

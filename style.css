@@ -36,9 +36,9 @@ body, html {
 /* 右側氣泡圖設定 */
 .bubble-right {
     position: absolute;
-    top: 100px;         /* 從section底部向上30px */
-    right: 100px;       /* 靠右40px */
-    width: 400px;       /* 圖片寬度，可依需求調整 */
+    top: 25%;         /* 從section底部向上30px */
+    right: 10%;       /* 靠右 */
+    width: 300px;       /* 圖片寬度，可依需求調整 */
     height: auto;
     z-index: 10;        /* 保持在最上層，僅次於文字 */
 }
@@ -167,7 +167,7 @@ body, html {
 }
 
 .section2 { 
-    background-color: #9ADEF1; 
+    background: linear-gradient(to bottom, #9ADEF1 0%, #9ADEF1 100%); 
     position: relative; /* 確保SVG圖能正確定位 */
 }
 
@@ -179,7 +179,7 @@ body, html {
     display: block;             /* 確保每個段落單獨換行 */
     width: fit-content;         /* 根據文字自動調整背景長度 */
     margin: auto;
-    background-color: white;    /* 每行文字的背景色 */
+    background-color: none;
     color: #246D9D;             /* 文字顏色為深藍色 */
     font-size: 1.8rem;          /* 字體大小 */
     font-weight: 600;
@@ -380,7 +380,7 @@ body, html {
 }
 
 .sea-level-text {
-    background-color: white; /* 反白背景 */
+    background-color: none;
     color: #246D9D; /* 預設文字顏色 */
     font-size: 1.5rem; /* 可調整文字大小 */
     font-weight: 600; /* 可調整字重 */
@@ -486,7 +486,7 @@ body, html {
     z-index: 5; /* 確保在最上層 */
 }
 .sea-impact-text {
-    background-color: white; /* 反白背景 */
+    background-color:none;
     color: #246D9D; /* 預設文字顏色 */
     font-size: 1.5rem; /* 可調整文字大小 */
     font-weight: 600; /* 可調整字重 */
