@@ -572,14 +572,14 @@ body, html {
 .section7 .question-container {
     position: absolute;
     top: 3%; /* 可調整文字區塊位置 */
-    left: 10%; /* 可調整距離 */
+    left: 15%; /* 可調整距離 */
     z-index: 4; /* 確保文字在波浪上層 */
 }
 
 .question-text {
-    background-color: white; /* 反白背景 */
+    background-color: #FFFFFF; /* 反白背景 */
     color: #246D9D; /* 預設文字顏色 */
-    font-size: 1.5rem; /* 可調整文字大小 */
+    font-size: 2rem; /* 可調整文字大小 */
     font-weight: 600; /* 可調整字重 */
     padding: 4px 5px; /* 內距確保文字不貼邊 */
     text-align: center;
@@ -594,6 +594,59 @@ body, html {
     height: auto;
     z-index: 3; /* 確保在最上層 */
 }
+/* ✅ 按鈕外框 */
+.nav-buttons {
+    position: absolute;
+    width: 100%;
+    top: 45%;
+    transform: translateY(-50%); /* ✅ 確保垂直置中 */
+    display: flex;
+    justify-content: space-between;
+    z-index: 30; /* ✅ 確保在字卡上方 */
+    pointer-events: none; /* ✅ 讓滑鼠不影響字卡 */
+}
+
+/* ✅ 左右按鈕 */
+.left-button, .right-button {
+    pointer-events: all; /* ✅ 讓按鈕可點擊 */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* ✅ 調整按鈕大小 */
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9); /* ✅ 按鈕背景色 */
+    border-radius: 50%; /* ✅ 讓按鈕變圓 */
+    transition: transform 0.2s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* ✅ 增加陰影 */
+    z-index: 20;
+}
+
+/* ✅ 左按鈕位置 */
+.left-button {
+    position: absolute;
+    left: 3%; /* ✅ 距離左側的距離，可調整 */
+}
+
+/* ✅ 右按鈕位置 */
+.right-button {
+    position: absolute;
+    right: 3%; /* ✅ 距離右側的距離，可調整 */
+}
+
+/* ✅ SVG 圖片樣式 */
+.left-button img, .right-button img {
+    width: 35px; /* ✅ SVG 圖片大小，可調整 */
+    height: auto;
+    filter: invert(20%) sepia(80%) saturate(600%) hue-rotate(180deg); /* ✅ 改變顏色 */
+}
+
+/* ✅ 按鈕懸停時的效果 */
+.left-button:hover, .right-button:hover {
+    transform: scale(1.1); /* ✅ 滑鼠移過去時稍微放大 */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* ✅ 懸停時陰影變大 */
+}
+
 /* 資訊卡容器 (橫向排列，包含 5 個卡片) */
 .info-card-wrapper {
     position: relative;
@@ -601,6 +654,7 @@ body, html {
     margin: 0 auto; /* ✅ 讓它保持置中 */
     overflow: hidden; /* ✅ 確保卡片區域超出的部分不會顯示 */
     padding: 50px 0; /* ✅ 上下增加 50px 的距離 */
+    z-index: 10;
 }
 /* ✅ 確保資訊卡能夠左右拖移 */
 .info-card-container {
@@ -609,7 +663,7 @@ body, html {
     gap: 60px; /* ✅ 卡片間距 */
     cursor: grab;
     user-select: none;
-    padding: 0 1%; /* ✅ 讓左右側有 5% 空間 */
+    padding: 0 5%; /* ✅ 讓左右側有 5% 空間 */
     position: relative;
     transition: transform 0.3s ease-out; /* ✅ 讓移動更流暢 */
 }

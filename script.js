@@ -327,14 +327,30 @@ ScrollTrigger.create({
 
 // ✅ 讓 `.circle-item` 隨機上下左右晃動
 document.querySelectorAll(".circle-item img").forEach((img, index) => {
-    gsap.to(img, {
-        x: () => gsap.utils.random(-15, 15),  // 左右晃動範圍
-        y: () => gsap.utils.random(-15, 15),  // 上下晃動範圍
-        duration: 2,  // 動畫時間
-        repeat: -1,  // 無限循環
-        yoyo: true,  // 來回擺動
+    // ✅ 呼吸式縮放動畫（自動吸引注意）
+    gsap.to(".circle-item", {
+        scale: 1.07,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
         ease: "power1.inOut"
     });
+    // ✅ 輕微旋轉動畫（讓圖片更有動態感）
+    gsap.to(".circle-item", {
+        rotation: () => gsap.utils.random(-5, 5),
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+    });
+
+    // ✅ 滑鼠 hover 時「放大並保持」
+    document.querySelectorAll(".circle-item").forEach(circle => {
+        circle.addEventListener("mouseenter", function () {
+            gsap.to(this, { scale: 1.2, duration: 0.3, ease: "power2.out" }); // 放大
+            this.style.cursor = "pointer"; // 變成可點擊
+        });
+    });  
 });
 
 // ✅ **讓 `.circle-text` 初始時隱藏**
@@ -393,23 +409,81 @@ gsap.to(".question-container", {
     }
 });
 
-// ✅ 啟動 Draggable，並設定邊界
-Draggable.create(cardContainer, {
-    type: "x",
-    bounds: updateBounds(),
-    inertia: true,
-    edgeResistance: 0.9,
-    cursor: "grab",
-    onPress: function () {
-        this.target.style.cursor = "grabbing";
-    },
-    onRelease: function () {
-        this.target.style.cursor = "grab";
-    },
-    onDrag: function () {
-        updateMaskVisibility();
-    }
-});
+// ✅ 選取左右按鈕
+const leftButton = document.querySelector(".left-button");
+const rightButton = document.querySelector(".right-button");
+
+// ✅ 只在 `cardContainer` 存在時執行
+if (cardContainer) {
+    // ✅ 按鈕功能 - 左右移動
+    if (leftButton && rightButton && cardContainer) {
+        const moveAmount = 300; // ✅ 每次點擊的移動距離
+    
+        // 🔹 **可調整的間距**
+        let cardPadding = 50; // ✅ **字卡與按鈕的間距**
+        let extraLeftMargin = 50;  // ✅ **允許往左移動的額外空間**
+        let extraRightMargin = 50; // ✅ **允許往右移動的額外空間**
+    
+        let minX, maxX; // ✅ 限制範圍變數
+    
+        // ✅ **計算可移動範圍**
+        const updateButtonBounds = () => {
+            const wrapperWidth = wrapper.offsetWidth; // **可視範圍的寬度**
+            const containerWidth = cardContainer.scrollWidth; // **總卡片寬度**
+    
+            // ✅ **計算範圍，確保字卡不會貼到按鈕**
+            minX = Math.min(wrapperWidth - containerWidth - extraRightMargin + cardPadding, 0);
+            maxX = extraLeftMargin - cardPadding; 
+        };
+    
+        // ✅ **初始化時先計算一次範圍**
+        updateButtonBounds();
+    
+        leftButton.addEventListener("click", function () {
+            let currentX = gsap.getProperty(cardContainer, "x");
+            let newX = Math.min(currentX + moveAmount, maxX); // ✅ 限制不超過 maxX
+    
+            gsap.to(cardContainer, {
+                x: newX,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        });
+    
+        rightButton.addEventListener("click", function () {
+            let currentX = gsap.getProperty(cardContainer, "x");
+            let newX = Math.max(currentX - moveAmount, minX); // ✅ 限制不超過 minX
+    
+            gsap.to(cardContainer, {
+                x: newX,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        });
+    
+        // ✅ **當視窗大小改變時，重新計算範圍**
+        window.addEventListener("resize", updateButtonBounds);
+    }    
+
+    // ✅ Draggable 功能 - 拖動資訊卡
+    Draggable.create(cardContainer, {
+        type: "x",
+        bounds: updateBounds(),
+        inertia: true,
+        edgeResistance: 0.9,
+        cursor: "grab",
+        onPress: function () {
+            this.target.style.cursor = "grabbing";
+        },
+        onRelease: function () {
+            this.target.style.cursor = "grab";
+        },
+        onDrag: function () {
+            updateMaskVisibility();
+        }
+    });
+}
+
 
 // ✅ 當視窗大小改變時，重新計算邊界
 window.addEventListener("resize", () => {
