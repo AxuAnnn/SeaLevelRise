@@ -8,17 +8,19 @@ body, html {
     height: 100%;
 }
 
-.section {
-    width: 100%;
+/* ✅ 通用 section 樣式，排除 section4、5、6（橫向滑動區） */
+.section:not(.section4):not(.section5):not(.section6) {
     height: 100vh;
+    width: 100%; /* 只給垂直區塊用 */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     color: white;
-    font-family: "Noto Sans TC",Arial, sans-serif;
     position: relative;
+    font-family: "Noto Sans TC", Arial, sans-serif;
 }
+  
 .section1 { 
     position: relative;
     overflow: hidden;
@@ -255,37 +257,34 @@ body, html {
 }
 /* ✅ 這個容器包裹 section4、section5、section6，讓它們水平移動 */
 .horizontal-wrapper {
-    width: 300vw; /* 三個區塊佔滿寬度 */
+    width: 300vw; /* ← 將寬度設為橫向總寬 */
     height: 100vh;
-    display: flex;
-    flex-direction: row;
+    overflow: hidden;
     position: relative;
+    display: flex; /* ← 這行是關鍵 */
 }
-
-/* ✅ 讓 section4、section5、section6 橫向排列 */
+  
 .horizontal-sections {
     display: flex;
-    flex-direction: row;
-    width: 300vw; /* 讓三個 section 串起來 */
+    flex-direction: row; /* ⬅️ 這個非常重要！保證 section4~6 是橫向排列 */
+    width: 300vw;         /* 三個區塊總寬度 */
     height: 100vh;
-    transform: translateX(0); /* 初始時 section4 保持原位 */
+    transform: translateX(0);
 }
-/* ✅ 讓 section4、5、6 水平排列 */
-.section {
+  
+.horizontal-wrapper .section {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
-    position: relative;
+    flex-shrink: 0; /* ⬅️ 防止 section 被壓縮！非常重要！ */
 }
+  
 /* Section 4 背景區塊 */
 .section4 {
     background-color: #9ADEF1;
     position: relative;
-    z-index: 50; /* ✅ 確保 section5 在上方 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .section4 .background-box {
@@ -366,8 +365,9 @@ body, html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    z-index: 50; /* ✅ 確保在 section4 上方 */
+    z-index: auto; /* ✅ 確保在 section4 上方 */
     background-color: #9ADEF1; 
+    flex-shrink: 0;
 }
 
 /* 反白文字區塊（獨立位置） */
@@ -474,8 +474,9 @@ body, html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    z-index: 50; /* ✅ 確保 section6 在 section5 上方 */
+    z-index: auto;
     background-color: #9ADEF1;  /* 測試顏色 */
+    flex-shrink: 0;
 }
 /* 反白文字區塊（獨立位置） */
 .sea-impact-container {
@@ -551,6 +552,17 @@ body, html {
     color: #246D9D; /* 預設文字顏色 */
     padding: 5px 10px; /* 內距確保文字不貼邊 */
 }
+.horizontal-sections .section {
+    flex-shrink: 0;         /* 不收縮，保持寬度 */
+    width: 100vw;           /* 每個 section 都是全寬 */
+    height: 100vh;          /* 每個 section 都是全高 */
+    position: relative;     /* 確保內部絕對定位不錯位 */
+    overflow: visible;       /* 防止元素溢出 */
+}
+.section4 { z-index: 3; }
+.section5 { z-index: 2; }
+.section6 { z-index: 1; }
+
 /* ✅ section7 和 section8 必須壓在最下面，讓 section6 後面直接進入 section7 */
 .vertical-wrapper {
     position: relative;
@@ -775,7 +787,7 @@ body, html {
     font-size: 14px;
     cursor: pointer;
     margin-top: 10px;
-    border-radius: 5px;
+    border-radius: 50px;
     transition: background 0.3s;
 }
 
@@ -853,7 +865,7 @@ body, html {
 }
 
 .sea-action-text {
-    background-color: white; /* 反白背景 */
+    background-color: none; /* 反白背景 */
     color: #246D9D; /* 預設文字顏色 */
     font-size: 1.8rem; /* 可調整文字大小 */
     font-weight: 600; /* 可調整字重 */
@@ -863,11 +875,11 @@ body, html {
 }
 /* ✅ 按鈕樣式 */
 .action-button {
-    margin-top: 20px;
+    margin-top: 10%;
     padding: 10px 20px;
     font-size: 1.2rem;
     font-weight: bold;
-    color: white;
+    color: #FFFFFF;
     background-color: #246D9D;
     border: none;
     border-radius: 50px;
@@ -943,6 +955,9 @@ body, html {
 .parallax > use:nth-child(3) {
     animation-delay: -4s;
     animation-duration: 13s;
+}
+body {
+    overflow-x: hidden;
 }
 
 /* 動畫效果 */

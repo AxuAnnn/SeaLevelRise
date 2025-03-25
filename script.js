@@ -303,17 +303,54 @@ ScrollTrigger.addEventListener("refreshInit", getMaxWidth);
 
 
 // ✅ 讓 section4 → section5 → section6 **水平滑動**，不允許垂直滾動
-gsap.to(".horizontal-wrapper", {
-    x: () => `-${maxWidth - window.innerWidth}`,  // ✅ 只讓 section6 滿版
-    ease: "none",
-    scrollTrigger: {
-        trigger: ".horizontal-wrapper",
-        pin: true, // ✅ 固定 section4、5、6，不能往下滾
-        scrub: true,
-        end: () => `+=${maxWidth}`,
-        invalidateOnRefresh: true
-    }
+const horizontalWrapper = document.querySelector(".horizontal-wrapper");
+const horizontalSections = gsap.utils.toArray(".horizontal-wrapper .section");
+
+// 先取得總寬度（每個 section 寬度相加）
+let totalWidth = 0;
+const getTotalWidth = () => {
+  totalWidth = 0;
+  horizontalSections.forEach(section => {
+    totalWidth += section.offsetWidth;
+  });
+};
+getTotalWidth();
+ScrollTrigger.addEventListener("refreshInit", getTotalWidth);
+
+setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 100); // 給瀏覽器一點時間，確保 section5,6 都完成 render
+  
+
+// ✅ 控制進入與離開時，動態修改 .horizontal-wrapper 的寬度
+ScrollTrigger.create({
+  trigger: ".horizontal-wrapper",
+  start: "top center",
+  end: () => `+=${totalWidth}`,
+  onEnter: () => {
+    horizontalWrapper.style.width = `${totalWidth}px`;
+    horizontalWrapper.style.display = "flex";
+    horizontalWrapper.style.alignItems = "stretch";
+    horizontalWrapper.style.pointerEvents = "auto"; // 開啟互動
+  },
+  onLeaveBack: () => {
+    horizontalWrapper.style.pointerEvents = "none";
+  }
 });
+
+// ✅ 在滾動期間讓整個 wrapper 水平位移（原本 gsap.to 的部分）
+gsap.to(".horizontal-wrapper", {
+  x: () => `-${totalWidth - window.innerWidth}`,
+  ease: "none",
+  scrollTrigger: {
+    trigger: ".horizontal-wrapper",
+    pin: ".horizontal-wrapper", // ✅ 這樣能正確固定目標
+    scrub: true,
+    end: () => `+=${totalWidth}`,
+    invalidateOnRefresh: true
+  }
+});
+
 
 // ✅ **確保 section6 滿版後，才能往 section7 滾動**
 ScrollTrigger.create({
@@ -541,5 +578,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+setTimeout(() => ScrollTrigger.refresh(), 200);
 
 
