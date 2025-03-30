@@ -249,9 +249,7 @@ body, html {
 .iceberg {
     position: absolute;
     bottom: 0;         /* 貼近 section3 底部 */
-    left: 40px;        /* 距離左側 40px */
-    right: 40px;       /* 距離右側 40px */
-    width: calc(100% - 80px); /* 確保距離左右各 40px */
+    width: 100%;
     height: auto;
     z-index: 5;        /* 圖層位置確保不被其他元素覆蓋 */
 }
@@ -290,10 +288,10 @@ body, html {
 .section4 .background-box {
     position: absolute;
     top: 0;
-    left: 40px;
-    width: calc(100% - 80px); /* 確保左右各 40px */
-    height: 100%; /* 填滿整個 section4 高度 */
+    width: 100%; /* 💡 保證剛好等於視窗寬度 */
+    height: 100vh;
     background-color: white;
+    z-index: 1;
 }
 /* 大的容器，包含圖片與文字區塊 */
 .info-container {

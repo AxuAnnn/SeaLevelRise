@@ -321,29 +321,29 @@ setTimeout(() => {
     ScrollTrigger.refresh();
   }, 100); // 給瀏覽器一點時間，確保 section5,6 都完成 render
   
+  ScrollTrigger.create({
+    trigger: ".section4",
+    start: "top top", // ✅ 當 section4 滿版時才觸發
+    end: () => `+=${totalWidth}`,
+    onEnter: () => {
+      horizontalWrapper.style.width = `${totalWidth}px`;
+      horizontalWrapper.style.display = "flex";
+      horizontalWrapper.style.alignItems = "stretch";
+      horizontalWrapper.style.pointerEvents = "auto";
+    },
+    onLeaveBack: () => {
+      horizontalWrapper.style.pointerEvents = "none";
+    }
+  });
+  
 
-// ✅ 控制進入與離開時，動態修改 .horizontal-wrapper 的寬度
-ScrollTrigger.create({
-  trigger: ".horizontal-wrapper",
-  start: "top center",
-  end: () => `+=${totalWidth}`,
-  onEnter: () => {
-    horizontalWrapper.style.width = `${totalWidth}px`;
-    horizontalWrapper.style.display = "flex";
-    horizontalWrapper.style.alignItems = "stretch";
-    horizontalWrapper.style.pointerEvents = "auto"; // 開啟互動
-  },
-  onLeaveBack: () => {
-    horizontalWrapper.style.pointerEvents = "none";
-  }
-});
 
 // ✅ 在滾動期間讓整個 wrapper 水平位移（原本 gsap.to 的部分）
 gsap.to(".horizontal-wrapper", {
   x: () => `-${totalWidth - window.innerWidth}`,
   ease: "none",
   scrollTrigger: {
-    trigger: ".horizontal-wrapper",
+    trigger: ".section4",
     pin: ".horizontal-wrapper", // ✅ 這樣能正確固定目標
     scrub: true,
     end: () => `+=${totalWidth}`,
