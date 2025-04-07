@@ -390,20 +390,31 @@ document.querySelectorAll(".circle-item img").forEach((img, index) => {
     });  
 });
 
-// ✅ **讓 `.circle-text` 初始時隱藏**
+// ✅ 初始隱藏所有文字
 gsap.set(".circle-text", { opacity: 0, scale: 0 });
 
-// ✅ **點擊 `.circle-item` 時，讓 `.circle-text` 顯示**
+// ✅ 每個泡泡點擊後只觸發一次，顯示對應文字
 document.querySelectorAll(".circle-item").forEach(item => {
-    item.addEventListener("click", function () {
-        // 先隱藏所有 `.circle-text`
-        gsap.to(".circle-text", { opacity: 0, scale: 0, duration: 0.3 });
+    let clicked = false; // 是否已經點擊過
 
-        // 只顯示當前點擊的 `.circle-text`
-        let text = this.querySelector(".circle-text");
-        gsap.to(text, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" });
+    item.addEventListener("click", function () {
+        if (clicked) return; // 如果已經點過，什麼都不做
+        clicked = true;
+
+        const text = item.querySelector(".circle-text");
+        gsap.to(text, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)"
+        });
+
+        // 禁用再次點擊
+        item.style.pointerEvents = "none";
     });
 });
+
+
 // ✅ **點擊 `.view-more-btn` 時，讓 `.card-text` 顯示**
 document.querySelectorAll(".view-more-btn").forEach(button => {
     button.addEventListener("click", function() {
