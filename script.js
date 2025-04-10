@@ -442,7 +442,42 @@ const updateBounds = () => {
 
     return { minX: maxDrag, maxX: 0 };
 };
+document.addEventListener("DOMContentLoaded", function () {
+    const tooltip = document.createElement("div");
+    tooltip.classList.add("map-tooltip");
+    tooltip.style.position = "absolute";
+    tooltip.style.padding = "6px 10px";
+    tooltip.style.background = "rgba(0, 0, 0, 0.75)";
+    tooltip.style.color = "white";
+    tooltip.style.fontSize = "14px";
+    tooltip.style.borderRadius = "4px";
+    tooltip.style.pointerEvents = "none";
+    tooltip.style.zIndex = "1000";
+    tooltip.style.display = "none";
 
+    document.body.appendChild(tooltip);
+
+    const paths = document.querySelectorAll("svg path");
+
+    paths.forEach((path) => {
+      const name = path.getAttribute("name") || "未知地區";
+      const value = path.dataset.value || "";
+
+      path.addEventListener("mouseenter", (e) => {
+        tooltip.textContent = value ? `${name}: ${value}` : name;
+        tooltip.style.display = "block";
+      });
+
+      path.addEventListener("mousemove", (e) => {
+        tooltip.style.left = e.pageX + 15 + "px";
+        tooltip.style.top = e.pageY + 15 + "px";
+      });
+
+      path.addEventListener("mouseleave", () => {
+        tooltip.style.display = "none";
+      });
+    });
+});
 // ✅ section7文字淡入
 gsap.to(".question-container", {
     opacity: 1,

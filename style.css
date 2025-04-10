@@ -586,7 +586,7 @@ body, html {
 }
   
 .section6_2 path {
-    fill: #6f9c76;
+    fill: #5FB5D9;
     stroke: #ffffff;
     stroke-width: 0.5;
     cursor: pointer;
@@ -594,9 +594,10 @@ body, html {
 }
   
 .section6_2 path:hover {
-    fill: #4e7d5b;
+    fill: #3C8BB5;
 }
-  
+
+
 /* Section 7 設定 */
 .section7 {
     background-color: white; /* 背景色，可調整 */
