@@ -442,42 +442,124 @@ const updateBounds = () => {
 
     return { minX: maxDrag, maxX: 0 };
 };
+// ✅ section6_2 tooltip
 document.addEventListener("DOMContentLoaded", function () {
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("map-tooltip");
-    tooltip.style.position = "absolute";
-    tooltip.style.padding = "6px 10px";
-    tooltip.style.background = "rgba(0, 0, 0, 0.75)";
-    tooltip.style.color = "white";
-    tooltip.style.fontSize = "14px";
-    tooltip.style.borderRadius = "4px";
-    tooltip.style.pointerEvents = "none";
-    tooltip.style.zIndex = "1000";
-    tooltip.style.display = "none";
+    // 🔹自訂每個地區的 tooltip 內容
+    const tooltipData = {
+      TWNWT: {
+        info1: "新北市\n海平面上升 1.5~2m",
+        info2: "新北市\n淹沒面積 1.5%",
+      },
+      TWTPE: {
+        info1: "臺北市\n海平面上升 暫未受影響",
+        info2: "臺北市\n淹沒面積 暫未受影響",
+      },
+      TWTAO: {
+        info1: "桃園市\n海平面上升 大於2m",
+        info2: "桃園市\n淹沒面積 1%",
+      },
+      TWHSQ: {
+        info1: "新竹縣\n海平面上升 大於2m",
+        info2: "新竹縣\n淹沒面積 1.09%",
+      },
+      TWHSZ: {
+        info1: "新竹市\n海平面上升 大於2m",
+        info2: "新竹市\n淹沒面積 1.09%",
+      },
+      TWMIA: {
+        info1: "苗栗縣\n海平面上升 1~1.5m",
+        info2: "苗栗縣\n淹沒面積 1.61%",
+      },
+      TWTXG: {
+        info1: "臺中市\n海平面上升 0.5~1m",
+        info2: "臺中市\n淹沒面積 0.91%",
+      },
+      TWCHA: {
+        info1: "彰化縣\n海平面上升 1.5~2m",
+        info2: "彰化縣\n淹沒面積 2.89%",
+      },
+      TWYUN: {
+        info1: "雲林縣\n海平面上升 大於2m",
+        info2: "雲林縣\n淹沒面積 4.3%",
+      },
+      TWCYQ: {
+        info1: "嘉義縣\n海平面上升 大於2m",
+        info2: "嘉義縣\n淹沒面積 1.4%",
+      },
+      TWTNN: {
+        info1: "臺南市\n海平面上升 1.5~2m",
+        info2: "臺南市\n淹沒面積 3.29%",
+      },
+      TWKHH: {
+        info1: "高雄市\n海平面上升 1.5~2m",
+        info2: "高雄市\n淹沒面積 0.48%",
+      },
+      TWPIF: {
+        info1: "屏東縣\n海平面上升 1.0~1.5m",
+        info2: "屏東縣\n淹沒面積 1.04%",
+      },
+      TWTTT: {
+        info1: "臺東縣\n海平面上升 大於2m",
+        info2: "臺東縣\n淹沒面積 1.24%",
+      },
+      TWHUA: {
+        info1: "花蓮縣\n海平面上升 1.5~2m",
+        info2: "花蓮縣\n淹沒面積 0.3%",
+      },
+      TWILA: {
+        info1: "宜蘭縣\n海平面上升 0.5~1m",
+        info2: "宜蘭縣\n淹沒面積 0.56%",
+      },
+      TWKEE: {
+        info1: "基隆市\n海平面上升 0.5~1m",
+        info2: "基隆市\n淹沒面積 2.26%",
+      },
+      TWNAN: {
+        info1: "南投縣\n海平面上升 暫未受影響",
+        info2: "南投縣\n淹沒面積 暫未受影響",
+      },
+      TWCYI: {
+        info1: "嘉義市\n海平面上升 大於2m",
+        info2: "嘉義市\n淹沒面積 1%",
+      },
+      // ➕ 其他地區依樣新增...
+    };
+  
+    let currentInfoType = "info1";
+  
+    // 🔸 取得右側資訊顯示區塊
+    const infoTextElement = document.getElementById("infoText");
 
-    document.body.appendChild(tooltip);
-
-    const paths = document.querySelectorAll("svg path");
-
-    paths.forEach((path) => {
-      const name = path.getAttribute("name") || "未知地區";
-      const value = path.dataset.value || "";
-
-      path.addEventListener("mouseenter", (e) => {
-        tooltip.textContent = value ? `${name}: ${value}` : name;
-        tooltip.style.display = "block";
-      });
-
-      path.addEventListener("mousemove", (e) => {
-        tooltip.style.left = e.pageX + 15 + "px";
-        tooltip.style.top = e.pageY + 15 + "px";
-      });
-
-      path.addEventListener("mouseleave", () => {
-        tooltip.style.display = "none";
-      });
+    // 🔸 切換按鈕功能（保留）
+    const tabButtons = document.querySelectorAll(".tooltip-tabs button");
+    tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+        currentInfoType = btn.dataset.type;
+        tabButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        });
     });
-});
+
+    // 🔸 滑過地圖 path 時更新右側 infoText 的內容
+    const paths = document.querySelectorAll("svg path");
+    paths.forEach((path) => {
+        const id = path.getAttribute("id");
+
+        path.addEventListener("mouseenter", () => {
+        const data = tooltipData[id];
+        if (data && data[currentInfoType]) {
+            infoTextElement.textContent = data[currentInfoType];
+        } else {
+            infoTextElement.textContent = "此地區暫無資料";
+        }
+        });
+
+        path.addEventListener("mouseleave", () => {
+        infoTextElement.textContent = "請將滑鼠移到地圖上方查看資訊";
+        });
+    });
+  });
+  
 // ✅ section7文字淡入
 gsap.to(".question-container", {
     opacity: 1,

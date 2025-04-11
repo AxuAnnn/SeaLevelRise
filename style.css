@@ -568,16 +568,90 @@ body, html {
 }
 /* Section 6_2 設定 */
 .section6_2 {
-    height: 100vh;
+    height: auto;               /* ✅ 讓高度自動根據內容決定 */
+    min-height: 100vh;          /* ✅ 最少滿版畫面 */
     width: 100vw;
-    background-color: #9ADEF1; /* 可自訂背景色 */
+    background-color: #9ADEF1;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    z-index: 10;
+    padding: 20px;
+    box-sizing: border-box;
     position: relative;
+    align-items: center;        /* ✅ 水平置中 */
 }
+
+.tooltip-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0px;      /* ✅ 原本是 15px，改成 0px 或更小 */
+    justify-content: center; /* ✅ 讓按鈕置中（可選） */
+}  
+
+.tooltip-tabs button {
+    padding: 6px 12px;
+    background-color: white;
+    border: 1px solid #246D9D;
+    color: #246D9D;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tooltip-tabs button.active {
+    background-color: #246D9D;
+    color: white;
+}
+
+/* 新增：左右排版區域 */
+.map-content-wrapper {
+    display: flex;
+    justify-content: center;       /* ✅ 左右置中 */
+    align-items: center;           /* ✅ 垂直置中 map + info */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex: 1;
+    gap: 5%;                     /* ✅ map 與 info 間距 */
+}
+.map-with-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; /* ✅ 這個 gap 控制按鈕與地圖的距離，你可以調整 */
+    margin-top: 10px; /* ✅ 這是整塊（含地圖+按鈕）距離上方的距離 */
+    margin-bottom: 10px;
+}
+
+/* 地圖部分 */
+.map-container {
+    flex: 1;
+    max-width: 80%;
+}
+
+.map-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+  
+  
+
+/* 右側資訊區 */
+.info-display {
+    width: 300px;
+    background-color: white;
+    color: #246D9D;
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    white-space: pre-line;
+}
+  
 .section6_2 svg {
     width: 100%;
     height: auto;
