@@ -442,85 +442,108 @@ const updateBounds = () => {
 
     return { minX: maxDrag, maxX: 0 };
 };
+// ✅ section6_2 文字淡入
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.fromTo(".section6_2-heading",
+  { opacity: 0, x: -50 },
+  {
+    opacity: 1,
+    x: 0,
+    duration: 1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".section6_2",
+      start: "top 70%",       // 當 section6_2 接近畫面中段時觸發淡入
+      end: "top 10%",         // 淡入後就保持住
+      toggleActions: "play none none reverse",  // 正向淡入、反向淡出
+      markers: false          // 👉 可打開來 debug 時加上 true
+    }
+  }
+);
+
+
+  
+  
 // ✅ section6_2 tooltip
 document.addEventListener("DOMContentLoaded", function () {
     // 🔹自訂每個地區的 tooltip 內容
     const tooltipData = {
       TWNWT: {
-        info1: "新北市\n海平面上升 1.5~2m",
-        info2: "新北市\n淹沒面積 1.5%",
+        info1: "新北市 1.5~2m",
+        info2: "新北市 1.5%",
       },
       TWTPE: {
-        info1: "臺北市\n海平面上升 暫未受影響",
-        info2: "臺北市\n淹沒面積 暫未受影響",
+        info1: "臺北市 暫未受影響",
+        info2: "臺北市 暫未受影響",
       },
       TWTAO: {
-        info1: "桃園市\n海平面上升 大於2m",
-        info2: "桃園市\n淹沒面積 1%",
+        info1: "桃園市 大於2m",
+        info2: "桃園市 1%",
       },
       TWHSQ: {
-        info1: "新竹縣\n海平面上升 大於2m",
-        info2: "新竹縣\n淹沒面積 1.09%",
+        info1: "新竹縣 大於2m",
+        info2: "新竹縣 1.09%",
       },
       TWHSZ: {
-        info1: "新竹市\n海平面上升 大於2m",
-        info2: "新竹市\n淹沒面積 1.09%",
+        info1: "新竹市 大於2m",
+        info2: "新竹市 1.09%",
       },
       TWMIA: {
-        info1: "苗栗縣\n海平面上升 1~1.5m",
-        info2: "苗栗縣\n淹沒面積 1.61%",
+        info1: "苗栗縣 1~1.5m",
+        info2: "苗栗縣 1.61%",
       },
       TWTXG: {
-        info1: "臺中市\n海平面上升 0.5~1m",
-        info2: "臺中市\n淹沒面積 0.91%",
+        info1: "臺中市 0.5~1m",
+        info2: "臺中市 0.91%",
       },
       TWCHA: {
-        info1: "彰化縣\n海平面上升 1.5~2m",
-        info2: "彰化縣\n淹沒面積 2.89%",
+        info1: "彰化縣 1.5~2m",
+        info2: "彰化縣 2.89%",
       },
       TWYUN: {
-        info1: "雲林縣\n海平面上升 大於2m",
-        info2: "雲林縣\n淹沒面積 4.3%",
+        info1: "雲林縣 大於2m",
+        info2: "雲林縣 4.3%",
       },
       TWCYQ: {
-        info1: "嘉義縣\n海平面上升 大於2m",
-        info2: "嘉義縣\n淹沒面積 1.4%",
+        info1: "嘉義縣 大於2m",
+        info2: "嘉義縣 1.4%",
       },
       TWTNN: {
-        info1: "臺南市\n海平面上升 1.5~2m",
-        info2: "臺南市\n淹沒面積 3.29%",
+        info1: "臺南市 1.5~2m",
+        info2: "臺南市 3.29%",
       },
       TWKHH: {
-        info1: "高雄市\n海平面上升 1.5~2m",
-        info2: "高雄市\n淹沒面積 0.48%",
+        info1: "高雄市 1.5~2m",
+        info2: "高雄市 0.48%",
       },
       TWPIF: {
-        info1: "屏東縣\n海平面上升 1.0~1.5m",
-        info2: "屏東縣\n淹沒面積 1.04%",
+        info1: "屏東縣 1.0~1.5m",
+        info2: "屏東縣 1.04%",
       },
       TWTTT: {
-        info1: "臺東縣\n海平面上升 大於2m",
-        info2: "臺東縣\n淹沒面積 1.24%",
+        info1: "臺東縣 大於2m",
+        info2: "臺東縣 1.24%",
       },
       TWHUA: {
-        info1: "花蓮縣\n海平面上升 1.5~2m",
-        info2: "花蓮縣\n淹沒面積 0.3%",
+        info1: "花蓮縣 1.5~2m",
+        info2: "花蓮縣 0.3%",
       },
       TWILA: {
-        info1: "宜蘭縣\n海平面上升 0.5~1m",
-        info2: "宜蘭縣\n淹沒面積 0.56%",
+        info1: "宜蘭縣 0.5~1m",
+        info2: "宜蘭縣 0.56%",
       },
       TWKEE: {
-        info1: "基隆市\n海平面上升 0.5~1m",
-        info2: "基隆市\n淹沒面積 2.26%",
+        info1: "基隆市 0.5~1m",
+        info2: "基隆市 2.26%",
       },
       TWNAN: {
-        info1: "南投縣\n海平面上升 暫未受影響",
-        info2: "南投縣\n淹沒面積 暫未受影響",
+        info1: "南投縣 暫未受影響",
+        info2: "南投縣 暫未受影響",
       },
       TWCYI: {
-        info1: "嘉義市\n海平面上升 大於2m",
-        info2: "嘉義市\n淹沒面積 1%",
+        info1: "嘉義市 大於2m",
+        info2: "嘉義市 1%",
       },
       // ➕ 其他地區依樣新增...
     };
@@ -546,17 +569,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const id = path.getAttribute("id");
 
         path.addEventListener("mouseenter", () => {
-        const data = tooltipData[id];
-        if (data && data[currentInfoType]) {
-            infoTextElement.textContent = data[currentInfoType];
-        } else {
-            infoTextElement.textContent = "此地區暫無資料";
-        }
-        });
-
-        path.addEventListener("mouseleave", () => {
-        infoTextElement.textContent = "請將滑鼠移到地圖上方查看資訊";
-        });
+            const data = tooltipData[id];
+            if (data && data[currentInfoType]) {
+              const [county, value] = data[currentInfoType].split(" ");
+              infoTextElement.innerHTML = `
+                <span class="${currentInfoType}">
+                  <span class="county-name">${county}</span>
+                  <span class="flood-info">${value}</span>
+                </span>
+              `;
+            } else {
+              infoTextElement.innerHTML = `<span class="default-text">此地區暫無資料</span>`;
+            }
+          });
+          
+            
+          path.addEventListener("mouseleave", () => {
+            infoTextElement.className = "";
+            infoTextElement.innerHTML = `<span class="default-text">試試看移動滑鼠到地圖上</span>`;
+          });
     });
   });
   
