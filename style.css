@@ -749,7 +749,7 @@ body, html {
   
 .info2 .flood-info {
     font-size: 2.5rem;
-    color: #FF7C7C;
+    color: #f67b7b;
     font-weight: 800;
 }
 
@@ -785,7 +785,7 @@ body, html {
 .section6_2 path#TWCYQ,  /* 嘉義縣 */
 .section6_2 path#TWTTT,  /* 臺東縣 */
 .section6_2 path#TWCYI   /* 嘉義市 */ {
-    fill: #1C5C8C;  /* 更深的藍色（你也可改為其他深藍代碼） */
+    fill: #f67b7b;  /* 更深的藍色（你也可改為其他深藍代碼） */
 }
 
 /* 可選：hover 時讓藍色再更明亮一點 */
