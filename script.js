@@ -590,6 +590,127 @@ document.addEventListener("DOMContentLoaded", function () {
           });
     });
   });
+// ✅ section6_3 直條圖
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById("changeBarChart").getContext("2d");
+  
+    const data = {
+      labels: ["碳排放量", "用電量", "垃圾量"],
+      datasets: [{
+        label: "2021 ➜ 2022",
+        data: [0, 0, 0], // 初始 0%，用動畫上升
+        backgroundColor: ["#2D7DB6", "#F67b7b", "#F67b7b"],
+        borderRadius: 4,
+        barThickness: 100
+      }]
+    };
+  
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: false,
+            min: -5,
+            max: 15,
+            ticks: {
+              callback: function (value) {
+                return value + "%";
+              },
+              color: "#246D9D", // Y軸字體顏色
+              font: {
+                size: 18,
+                weight: "900",
+                family: "Arial"
+              }
+            },
+            grid: {
+              color: "rgba(36, 109, 157, 0.2)" // Y軸網格線顏色
+            },
+            title: {
+              display: true,
+              text: "百分比變化 (%)",
+              color: "#246D9D",
+              font: {
+                size: 18,
+                weight: "900"
+              }
+            }
+          },
+          x: {
+            ticks: {
+              color: "#246D9D", // X軸字體顏色
+              font: {
+                size: 18,
+                weight: "900",
+                family: "Arial"
+              }
+            },
+            grid: {
+              color: "rgba(36, 109, 157, 0.2)" // X軸網格線顏色
+            },
+            title: {
+              display: false,
+              text: "臺灣2021-2022變化",
+              color: "#FFFFFF",
+              font: {
+                size: 24,
+                weight: "900"
+              }
+            }
+          }
+        },
+        plugins: {
+            tooltip: {
+              enabled: false  // ❌ 關掉 hover 顯示
+            },
+            legend: { display: false },
+            datalabels: {
+              anchor: 'end',
+              align: 'end',
+              color: '#246D9D',
+              font: {
+                size: 16,
+                weight: 'bold'
+              },
+              formatter: function(value) {
+                return value.toFixed(2) + '%';
+              }
+            }
+        }
+          
+    };
+      
+    Chart.register(ChartDataLabels);
+    const chart = new Chart(ctx, {
+      type: "bar",
+      data: data,
+      options: options
+    });
+  
+    ScrollTrigger.create({
+      trigger: "#section6_3",
+      start: "top 70%",
+      once: true,
+      onEnter: () => {
+        const finalData = [-3.78, 0.78, 11.84];
+        const duration = 1.5;
+        const steps = 60;
+        let frame = 0;
+  
+        const interval = setInterval(() => {
+          frame++;
+          for (let i = 0; i < finalData.length; i++) {
+            chart.data.datasets[0].data[i] = finalData[i] * (frame / steps);
+          }
+          chart.update();
+          if (frame >= steps) clearInterval(interval);
+        }, (duration * 1000) / steps);
+      }
+    });
+});
+  
+  
   
 // ✅ section7文字淡入
 gsap.to(".question-container", {
@@ -706,37 +827,83 @@ const updateMaskVisibility = () => {
 
 
 
+// ✅ 完整 JS 替換版，根據你提供的參考效果 + 自動上升 + 點擊下降
+// ✅ 上升更平滑、支援設定速度、初始化從 20vh 開始慢慢升
+
+// 注意：需在 DOMContentLoaded 與 ScrollTrigger 都已正確掛載情況下運行
+
 document.addEventListener("DOMContentLoaded", function () {
     const waveBackgroundRect = document.querySelector(".wave-background-rect");
     const waveContainer = document.querySelector(".wave-container");
     const actionButton = document.querySelector(".action-button");
 
     if (!waveBackgroundRect || !waveContainer || !actionButton) {
-        console.error("❌ 找不到 wave-background-rect 或 wave-container 或 action-button");
+        console.error("❌ 找不到必要元素");
         return;
     }
 
-    let waveHeight = 80; // 初始高度 80vh
-    let minHeight = 20;  // 最小高度 20vh
+    let currentHeight = 20;      // 初始高度
+    const maxHeight = 80;
+    const minHeight = 20;
+    const riseStep = 0.02;       // 每幀上升單位 (vh)
+    const clickStep = 2;         // 每次點擊下降單位 (vh)
+    let autoRising = true;
+    let animationFrame = null;
 
-    actionButton.addEventListener("click", function () {
-        if (waveHeight > minHeight) {
-            waveHeight -= 1;
+    // ✅ 初始化最低高度位置
+    function applyHeight(height) {
+        waveBackgroundRect.setAttribute("height", height);
+        waveBackgroundRect.setAttribute("y", 100 - height);
+        waveContainer.style.bottom = `${height}vh`;
+    }
 
-            // ✅ 更新 SVG 色塊的高度 & 位置
-            waveBackgroundRect.setAttribute("height", waveHeight);
-            waveBackgroundRect.setAttribute("y", 100 - waveHeight); // 確保色塊從底部縮小
+    applyHeight(currentHeight);
 
-            // ✅ 讓波浪也同步下降
-            waveContainer.style.bottom = `${waveHeight}vh`;
+    // ✅ 更平滑的上升動作 (requestAnimationFrame)
+    function smoothRise() {
+        if (!autoRising || currentHeight >= maxHeight) return;
 
-            console.log(`✅ 變更成功！目前色塊 & 波浪高度：${waveHeight}vh`);
-        } else {
-            console.log("⏹️ 已達最小高度 20vh，無法再降低！");
+        currentHeight = Math.min(currentHeight + riseStep, maxHeight);
+        applyHeight(currentHeight);
+
+        if (currentHeight < maxHeight && autoRising) {
+            animationFrame = requestAnimationFrame(smoothRise);
+        }
+    }
+
+    // ✅ 使用者點擊下降
+    actionButton.addEventListener("click", () => {
+        if (currentHeight > minHeight) {
+            currentHeight = Math.max(currentHeight - clickStep, minHeight);
+            applyHeight(currentHeight);
+
+            if (currentHeight <= minHeight) {
+                autoRising = false;
+                cancelAnimationFrame(animationFrame);
+                actionButton.classList.remove("shake");
+            } else {
+                if (!autoRising) {
+                    autoRising = true;
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = requestAnimationFrame(smoothRise);
+                }
+            }
+        }
+    });
+
+    // ✅ 進入 section8 開始動畫
+    ScrollTrigger.create({
+        trigger: ".section8",
+        start: "top 80%",
+        onEnter: () => {
+            autoRising = true;
+            currentHeight = minHeight;
+            applyHeight(currentHeight);
+            animationFrame = requestAnimationFrame(smoothRise);
+            actionButton.classList.add("shake");
         }
     });
 });
-
 setTimeout(() => ScrollTrigger.refresh(), 200);
 
 
