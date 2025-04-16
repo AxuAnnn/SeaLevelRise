@@ -591,125 +591,76 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 // ✅ section6_3 直條圖
-document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById("changeBarChart").getContext("2d");
-  
-    const data = {
-      labels: ["碳排放量", "用電量", "垃圾量"],
-      datasets: [{
-        label: "2021 ➜ 2022",
-        data: [0, 0, 0], // 初始 0%，用動畫上升
-        backgroundColor: ["#2D7DB6", "#F67b7b", "#F67b7b"],
-        borderRadius: 4,
-        barThickness: 100
-      }]
-    };
-  
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: false,
-            min: -5,
-            max: 15,
-            ticks: {
-              callback: function (value) {
-                return value + "%";
-              },
-              color: "#246D9D", // Y軸字體顏色
-              font: {
-                size: 18,
-                weight: "900",
-                family: "Arial"
-              }
-            },
-            grid: {
-              color: "rgba(36, 109, 157, 0.2)" // Y軸網格線顏色
-            },
-            title: {
-              display: true,
-              text: "百分比變化 (%)",
-              color: "#246D9D",
-              font: {
-                size: 18,
-                weight: "900"
-              }
-            }
-          },
-          x: {
-            ticks: {
-              color: "#246D9D", // X軸字體顏色
-              font: {
-                size: 18,
-                weight: "900",
-                family: "Arial"
-              }
-            },
-            grid: {
-              color: "rgba(36, 109, 157, 0.2)" // X軸網格線顏色
-            },
-            title: {
-              display: false,
-              text: "臺灣2021-2022變化",
-              color: "#FFFFFF",
-              font: {
-                size: 24,
-                weight: "900"
-              }
-            }
-          }
-        },
-        plugins: {
-            tooltip: {
-              enabled: false  // ❌ 關掉 hover 顯示
-            },
-            legend: { display: false },
-            datalabels: {
-              anchor: 'end',
-              align: 'end',
-              color: '#246D9D',
-              font: {
-                size: 16,
-                weight: 'bold'
-              },
-              formatter: function(value) {
-                return value.toFixed(2) + '%';
-              }
-            }
-        }
-          
-    };
-      
-    Chart.register(ChartDataLabels);
-    const chart = new Chart(ctx, {
-      type: "bar",
-      data: data,
-      options: options
-    });
-  
-    ScrollTrigger.create({
-      trigger: "#section6_3",
-      start: "top 70%",
-      once: true,
-      onEnter: () => {
-        const finalData = [-3.78, 0.78, 11.84];
-        const duration = 1.5;
-        const steps = 60;
-        let frame = 0;
-  
-        const interval = setInterval(() => {
-          frame++;
-          for (let i = 0; i < finalData.length; i++) {
-            chart.data.datasets[0].data[i] = finalData[i] * (frame / steps);
-          }
-          chart.update();
-          if (frame >= steps) clearInterval(interval);
-        }, (duration * 1000) / steps);
-      }
-    });
+
+const tooltip = document.getElementById("bar-tooltip");
+const tooltipIcon = document.getElementById("tooltip-icon");
+const tooltipText = document.getElementById("tooltip-text");
+
+document.querySelectorAll(".bar-inner").forEach(bar => {
+  bar.addEventListener("mousemove", (e) => {
+    const label = bar.getAttribute("data-label");
+    const iconSrc = bar.getAttribute("data-icon");
+
+    tooltipText.textContent = label;
+    tooltipIcon.src = iconSrc;
+    tooltip.style.opacity = 1;
+
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const tooltipWidth = tooltip.offsetWidth;
+    const centerX = window.innerWidth / 2;
+
+    tooltip.style.top = `${mouseY}px`;
+
+    if (mouseX < centerX) {
+      tooltip.classList.add("arrow-left");
+      tooltip.classList.remove("arrow-right");
+      tooltip.style.left = `${mouseX + 15}px`;
+    } else {
+      tooltip.classList.add("arrow-right");
+      tooltip.classList.remove("arrow-left");
+      tooltip.style.left = `${mouseX - tooltipWidth - 15}px`;
+    }
+  });
+
+  bar.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0;
+  });
 });
-  
+
+
+// ✅ 觀察 section6_3 進入畫面才啟動長條圖動畫
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById("main").classList.add("product1");
+      observer.unobserve(entry.target); // ✅ 加完 class 就停止觀察
+    }
+  });
+}, {
+  threshold: 0.4  // 當 section6_3 超過 40% 高度出現在畫面中才觸發
+});
+
+observer.observe(document.querySelector(".section6_3"));
+
+// ✅ section6_3上方進場文字動畫
+document.addEventListener("DOMContentLoaded", () => {
+  const heading = document.getElementById("section6_3-heading");
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          heading.classList.add("animate");
+        }
+      });
+    },
+    { threshold: 0.6 }
+  );
+
+  observer.observe(document.querySelector(".section6_3"));
+});
+
   
   
 // ✅ section7文字淡入

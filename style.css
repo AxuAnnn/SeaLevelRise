@@ -6,6 +6,7 @@
 }
 body, html {
     height: 100%;
+    font-size: 16px; /* ✅ 設定 root 字體大小便於使用 rem/em */
 }
 
 /* ✅ 通用 section 樣式，排除 section4、5、6（橫向滑動區） */
@@ -28,8 +29,8 @@ body, html {
 /* 左側氣泡圖設定 */
 .bubble-left {
     position: absolute;
-    top: 200px;         /* 從section底部向上30px */
-    left: 150px;        /* 靠左40px */
+    top:30%;         /* 從section底部向上30px */
+    left: 10%;        /* 靠左40px */
     width: 400px;       /* 圖片寬度，可依需求調整 */
     height: auto;
     z-index: 10;        /* 保持在最上層，僅次於文字 */
@@ -67,11 +68,11 @@ body, html {
 .vertical-text {
     display: flex;
     flex-direction: column;
-    margin-right: 24px;  /* 與英文文字間隔 24px */
+    margin-right: 10%;  /* 與英文文字間隔  */
 }
 
 .vertical-text span {
-    font-size: 36px;  /* 中文字體大小，後續可調整 */
+    font-size: 2.2rem;  /* 中文字體大小，後續可調整 */
     font-weight: 900;
     color: white;
     line-height: 1.2;
@@ -90,7 +91,7 @@ body, html {
 }
 .text-container span {
     display: block;      /* 每個單字換行 */
-    font-size: 64px;     /* 調整字體大小 */
+    font-size: 4rem;     /* 調整字體大小 */
     font-weight: 900;
     color: white;        /* 預設文字顏色為白色 */
 }
@@ -102,9 +103,9 @@ body, html {
 .text-line {
     position: absolute;
     top: 10%;
-    right: -60px;        /* 線條與文字間隔 24px */
-    width: 2px;
-    height: 180px;        /* 垂直線條延伸整個文字高度 */
+    right: -40%;        /* 線條與文字間隔 24px */
+    width: 0.2rem;
+    height: 11rem;        /* 垂直線條延伸整個文字高度 */
     background-color: white;
     transform: translate(-50%);
 
@@ -118,7 +119,7 @@ body, html {
     position: absolute;
     top: calc(10% + 180px + 4px); /* 線條底部再下移 10px */
     right: -11px;                  /* 確保圖標與線條居中對齊 */
-    width: 24px;                   /* 圖標寬度，可調整 */
+    width: 1.5rem;                   /* 圖標寬度，可調整 */
     height: auto;
 }
 /* ✅ 底部色塊 (背景色) */
@@ -189,8 +190,8 @@ body, html {
 /* 左側氣泡圖設定 */
 .section2 .bubble-left {
     position: absolute;
-    top: 150px;
-    left: 100px;
+    top: 15%;
+    left: 10%;
     width: 400px;   /* 可依需求調整大小 */
     height: auto;
     z-index: 4;
@@ -199,8 +200,8 @@ body, html {
 /* 右側氣泡圖設定 */
 .section2 .bubble-right {
     position: absolute;
-    top: 100px;
-    right: 200px;
+    top: 15%;
+    right: 20%;
     width: 200px;   /* 可依需求調整大小 */
     height: auto;
     z-index: 4;
@@ -800,20 +801,191 @@ body, html {
 }
 /* Section6_3 設定 */
 .section6_3 {
-    background-color: #9ADEF1;
-    min-height: 100vh;
+    background-color: #9ADEF1; /* 與 section6_2 一樣的藍色 */
+    padding: 100px 0;          /* 上下間距 */
+    position: relative; /* 🔧 這是讓右側文字能絕對定位的關鍵 */
+}
+  
+.graph-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 3em;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    font-size: 1em;
+    max-width: 900px;
+}
+.graph-container > li {
+    float: left;
+    position: relative;
+    margin: 0 2em;
+}
+
+/* Bar Wrapper */
+.bar-wrapper {
+    padding-bottom: 100px;
+}
+
+/* Bar Container */
+.bar-container {
+    position: relative;
+    margin-top: 10px;
+    width: 5em;
+    height: 25em;
+    transition: all 0.2s ease-out;
+}
+.bar-container:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 2.5em 2.5em;
+    border-color: transparent;
+    transform: rotateY(45deg);
+}
+
+/* Bar Inner: 3D effect */
+.bar-inner {
+    position: absolute;
+    width: 3em;
+    top: auto;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    color: transparent;
+    z-index: 2;
+    transform: skew(0, 24deg);
+    transition: height 1s ease-in-out, bottom 1s ease-in-out;
+    background-color: #ff6868;
+}
+.bar-inner:before {
+    content: "";
+    position: absolute;
+    top: -1.25em;
+    right: -2.5em;
+    width: 2.5em;
+    height: 100%;
+    background-color: #dc9db3;
+    transform: skew(0deg, -45deg);
+}
+.bar-inner:after {
+    content: "";
+    position: absolute;
+    top: -2.5em;
+    right: -1.25em;
+    width: 100%;
+    height: 2.5em;
+    background-color: #EDDDE3;
+    transform: skew(-45deg);
+}
+.bar-label {
+    position: absolute;
+    top: -4em;
+    left: 120%;
+    transform: translateX(-50%);
+    color: #246D9D;
+    font-size: 1.2rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+  
+/* Negative bar style */
+.bar-container.negative .bar-inner {
+    background-color: #2D7DB6;
+    bottom: 0;
+}
+.bar-container.negative .bar-inner:before {
+    background-color: #246D9D;
+}
+.bar-container.negative .bar-inner:after {
+    background-color: #5CA2D1;
+}
+
+/* Dynamic heights */
+.product1 .graph-container > li:nth-child(1) .bar-inner {
+    height: 60%;
+}
+.product1 .graph-container > li:nth-child(2) .bar-inner {
+    height: 10%;
+}
+.product1 .graph-container > li:nth-child(3) .bar-inner {
+    height: 15%;
+    bottom: -15%;
+}
+
+/* 基本 Tooltip 設定 */
+.bar-tooltip {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s ease;
 }
-
-.bar-chart-container {
-    width: 90%;
-    max-width: 800px;
-    height: 600px;  /* ✅ 增加圖表高度 */
-}
-
   
+/* Tooltip 箭頭：根據滑鼠位置動態變化 */
+.bar-tooltip.arrow-left::after,
+.bar-tooltip.arrow-right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0.4rem solid transparent;
+}
+  
+.bar-tooltip.arrow-left::after {
+    left: -0.4rem;
+    border-right-color: rgba(0, 0, 0, 0.85);
+}
+  
+.bar-tooltip.arrow-right::after {
+    right: -0.4rem;
+    border-left-color: rgba(0, 0, 0, 0.85);
+}
+  
+/* Tooltip 中的圖示 */
+.bar-tooltip img {
+    width: 2rem; /* ✅ 統一圖示大小為 rem 單位 */
+    height: 2rem;
+}
+  
+/* 新增：上方進場文字樣式 */
+.section6_3-heading {
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #246D9D;
+    text-align: center;
+    line-height: 1.4;
+    opacity: 0;
+    transition: all 0.6s ease;
+    pointer-events: none;
+}
+  
+.section6_3-heading.animate {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-1.25rem);
+}
+    
+
  
 /* Section 7 設定 */
 .section7 {
@@ -1241,6 +1413,5 @@ body {
 .action-button.shake {
     animation: subtle-shake 0.6s ease-in-out infinite;
 }
-  
   
 

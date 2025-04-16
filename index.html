@@ -303,18 +303,65 @@
             </div>
         </div>
 
-        <div class="section section6_3" id="section6_3">
-            <div class="bar-chart-container">
-              <canvas id="changeBarChart"></canvas>
+        <!-- ✅ Section 6_3 -->
+        <div class="section6_3">
+            <div class="container">
+            <!-- 新增：上方文字 -->
+            <div class="section6_3-heading" id="section6_3-heading">
+                你知道臺灣2020-2021環境成長百分比變化嗎?
+            </div>
+            <section class="main" id="main">
+                <ul class="graph-container">
+                <!-- 垃圾量 -->
+                <li>
+                    <div class="bar-wrapper">
+                    <div class="bar-container">
+                        <div class="bar-inner" data-label="垃圾量" data-icon="image/icon-trash.svg">
+                        <span class="bar-label">+11.84%</span>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+        
+                <!-- 用電量 -->
+                <li>
+                    <div class="bar-wrapper">
+                    <div class="bar-container">
+                        <div class="bar-inner" data-label="用電量" data-icon="image/icon-lightning.svg">
+                        <span class="bar-label">+0.78%</span>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+        
+                <!-- 碳排放量 -->
+                <li>
+                    <div class="bar-wrapper">
+                    <div class="bar-container negative">
+                        <div class="bar-inner" data-label="碳排放量" data-icon="image/icon-co2.svg">
+                        <span class="bar-label">-3.78%</span>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+                </ul>
+            </section>
+            </div>
+        
+            <!-- ✅ Tooltip -->
+            <div class="bar-tooltip" id="bar-tooltip">
+            <img id="tooltip-icon" src="" alt="" />
+            <span id="tooltip-text"></span>
             </div>
         </div>
+
           
              
         <div class="section section7">
             <img src="image/wave4.svg" class="wave-top" alt="Wave 4">
             <!-- 反白文字區塊 -->
             <div class="question-container">
-            <p class="question-text">我們可以怎麼做？</p>
+            <p class="question-text">那我們可以怎麼做？</p>
             </div>
             <!-- 資料來源區塊（右上角） -->
             <div class="source-container">
