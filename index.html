@@ -117,6 +117,7 @@
                     <div class="info-container">
                         <div class="info-icon">
                             <div id="doughnutChart"></div>
+                            <div id="pieTooltip" class="pie-tooltip">移動滑鼠到上方<br>查看數值</div>
                         </div>
                         <div class="info-text">
                             <p>截止2023年全球</p>
@@ -289,7 +290,7 @@
                 </div>
                 <!-- 右側資訊區塊：含按鈕列 + 資訊 -->
                 <div class="info-panel">
-                    <div class="info-box-wrapper">
+                    <div class="info-box-wrapper info1-active">
                       <div class="tooltip-tabs">
                         <button data-type="info1" class="active">海平面上升</button>
                         <button data-type="info2">淹沒面積比</button>
@@ -308,7 +309,7 @@
             <div class="container">
             <!-- 新增：上方文字 -->
             <div class="section6_3-heading" id="section6_3-heading">
-                你知道臺灣2020-2021環境成長百分比變化嗎?
+                你知道臺灣2020-2021環境百分比的變化嗎?
             </div>
             <section class="main" id="main">
                 <ul class="graph-container">
@@ -316,8 +317,8 @@
                 <li>
                     <div class="bar-wrapper">
                     <div class="bar-container">
-                        <div class="bar-inner" data-label="垃圾量" data-icon="image/icon-trash.svg">
-                        <span class="bar-label">+11.84%</span>
+                        <div class="bar-inner" data-label="+11.84%" data-icon="image/icon-trash.svg">
+                            <span class="bar-label">垃圾量</span>
                         </div>
                     </div>
                     </div>
@@ -327,8 +328,8 @@
                 <li>
                     <div class="bar-wrapper">
                     <div class="bar-container">
-                        <div class="bar-inner" data-label="用電量" data-icon="image/icon-lightning.svg">
-                        <span class="bar-label">+0.78%</span>
+                        <div class="bar-inner" data-label="+0.78%" data-icon="image/icon-lightning.svg">
+                            <span class="bar-label">用電量</span>
                         </div>
                     </div>
                     </div>
@@ -338,8 +339,8 @@
                 <li>
                     <div class="bar-wrapper">
                     <div class="bar-container negative">
-                        <div class="bar-inner" data-label="碳排放量" data-icon="image/icon-co2.svg">
-                        <span class="bar-label">-3.78%</span>
+                        <div class="bar-inner" data-label="-3.78%" data-icon="image/icon-co2.svg">
+                            <span class="bar-label">碳排放量</span>
                         </div>
                     </div>
                     </div>
@@ -388,7 +389,7 @@
                         <div class="card-content">
                             <h3 class="card-title">大眾運輸通勤</h3>
                             <button class="view-more-btn">查看更多</button>
-                            <p class="card-text">改變通勤方式可減少碳排放與空氣污染，交通運輸約佔臺灣碳排放總量的 14%。</p>
+                            <p class="card-text">改變通勤方式可減少碳排放與空氣污染，其中以騎腳踏車最為環保，不妨試著以腳踏車上路。</p>
                         </div>
                     </div>
             
@@ -400,7 +401,7 @@
                         <div class="card-content">
                             <h3 class="card-title">使用節能家電</h3>
                             <button class="view-more-btn">查看更多</button>
-                            <p class="card-text">節能標章冷氣比一般冷氣每年省 500-700 度電，減碳 300-400 公斤。</p>
+                            <p class="card-text">使用節能標章電器比一般電器更省電，能默默為地球省下一大筆電費。</p>
                         </div>
                     </div>
             
@@ -410,9 +411,9 @@
                             <img src="image/icon-bottle.svg" class="icon-image" alt="bottle">
                         </div>
                         <div class="card-content">
-                            <h3 class="card-title">拒用塑膠製品</h3>
+                            <h3 class="card-title">告別一次性塑膠</h3>
                             <button class="view-more-btn">查看更多</button>
-                            <p class="card-text">塑膠生產碳排放佔全球 6%，等同航空業總排放，減塑可保護環境並減緩氣候變遷。</p>
+                            <p class="card-text">隨身帶好用的環保袋、水杯和餐具，盡量減少使用一次性塑膠袋以及塑膠吸管。</p>
                         </div>
                     </div>
             
@@ -424,7 +425,7 @@
                         <div class="card-content">
                             <h3 class="card-title">少肉多蔬的飲食習慣</h3>
                             <button class="view-more-btn">查看更多</button>
-                            <p class="card-text">吃一份牛排產生 330 公克二氧化碳，相當於開車 4.8 公里，畜牧業碳排放佔全球 18%。</p>
+                            <p class="card-text">嘗試「無肉星期一」，午餐一次多夾份青菜或炒豆干，偶爾拿蛋、豆腐當主角，吃得過癮又輕盈。</p>
                         </div>
                     </div>
             
@@ -436,7 +437,7 @@
                         <div class="card-content">
                             <h3 class="card-title">重複利用降低物慾</h3>
                             <button class="view-more-btn">查看更多</button>
-                            <p class="card-text">衣物與物品生產運送累積碳足跡，延長使用壽命、重複利用可減少浪費。</p>
+                            <p class="card-text">讓舊衣、舊書別急著丟，動手改造、轉送或捐贈，讓物品繼續發光發熱、回收再出發。</p>
                         </div>
                     </div>
                 </div>
@@ -450,6 +451,7 @@
                 <p class="sea-action-text">你是否希望減緩海平面下降呢？</p>
                 <button class="action-button">是</button>
             </div>
+
             <!-- ✅ 用 SVG 當色塊 -->
             <svg class="wave-background-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <rect class="wave-background-rect" x="0" y="20" width="100" height="80" fill="#9ADEF1"/>
@@ -489,9 +491,16 @@
                 </svg>
             </div>
         </div>
-        
+        <!-- 提示框 Modal -->
+        <div id="alertModal" class="modal">
+            <div class="modal-content">
+                <p>恭喜！<br>海平面已下降至20mm，請保持這個狀態以保護海岸線。</p>
+                <button id="closeModal">關閉</button>
+            </div>
+        </div>
+
                
-    </main>
+    </main>      
     <footer>
 
     </footer>

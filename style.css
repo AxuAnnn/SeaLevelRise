@@ -315,8 +315,36 @@ body, html {
 
 #doughnutChart {
     margin: auto;
+    position: relative;
 }
-
+/* Section4 圓餅圖上方的提示框 */
+.pie-tooltip {
+    position: absolute;
+    top: 30%;
+    left: 8%;
+    background: #000;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    pointer-events: none;
+    z-index: 10;
+  
+    /* 新增：一開始完全隱藏 */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.pie-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -6px;                    /* arrow 在左側 pointing right */
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+}
 /* 右側文字區塊 */
 .info-text {
     width: 600px; /* 可調整文字區塊寬度 */
@@ -675,14 +703,23 @@ body, html {
   
 /* 點擊後的狀態 */
 .tooltip-tabs button.active {
-    background-color: #246D9D;  /* ✅ 深藍背景 */
+    background-color: #0a4973;  /* ✅ 深藍背景 */
     color: white;
 }
   
-/* 點擊後再 hover：變淡藍色背景 */
-.tooltip-tabs button.active:hover {
-    background-color: #4a8db8;
+/* info1-active（海平面上升）時，hover 到另一個未選按鈕 */
+.info-box-wrapper.info1-active .tooltip-tabs button:not(.active):hover {
+    background-color: #4a8db8; /* 或你想的深藍 hover 色 */
+    color: #FFFFFF;
 }
+  
+/* info2-active（淹沒面積比）時，hover 到另一個未選按鈕 */
+.info-box-wrapper.info2-active .tooltip-tabs button:not(.active):hover {
+    background-color: #7CC6EB; /* 或你想的淡藍 hover 色 */
+    color: #FFFFFF;
+}
+  
+
 .tooltip-divider {
     width: 80%;                /* ✅ 控制左右間距（可改 60% ~ 100%） */
     height: 0.08rem;               /* ✅ 線的粗細 */
@@ -720,7 +757,7 @@ body, html {
 /* 預設提示樣式 */
 .default-text {
     font-size: 1.2rem;
-    color: #246D9D;
+    color: #FFFFFF;
     display: inline-block;
     text-align: center;
     width: 100%;
@@ -729,7 +766,7 @@ body, html {
 /* info1: 海平面上升 */
 .info1 .county-name {
     font-size: 1.6rem;
-    color: #337CAA;
+    color: #FFFFFF;
     font-weight: bold;
     margin-right: 6px;
 }
@@ -743,14 +780,14 @@ body, html {
 /* info2: 淹沒面積 */
 .info2 .county-name {
     font-size: 1.6rem;
-    color: #337CAA;
+    color: #FFFFFF;
     font-weight: bold;
     margin-right: 6px;
 }
   
 .info2 .flood-info {
     font-size: 2.5rem;
-    color: #f67b7b;
+    color: #FF7C7C;
     font-weight: 800;
 }
 
@@ -771,7 +808,7 @@ body, html {
     fill: #5FB5D9;
     stroke: #ffffff;
     stroke-width: 0.5;
-    cursor: pointer;
+    cursor: default;
     transition: fill 0.2s ease;
 }
   
@@ -799,6 +836,28 @@ body, html {
 .section6_2 path#TWCYI:hover {
     fill: #2D7DB6;
 }
+/* 海平面上升（info1）被點擊時：整個白框變深藍，文字都變白 */
+.info-box-wrapper.info1-active {
+    background-color: #246D9D;
+}
+.info-box-wrapper.info1-active .tooltip-tabs button,
+.info-box-wrapper.info1-active .tooltip-tabs button.active,
+.info-box-wrapper.info1-active .tooltip-divider,
+.info-box-wrapper.info1-active .info-display {
+    color: #FFFFFF;
+}
+
+/* 淹沒面積比（info2）被點擊時：整個白框變淡藍，文字變深藍 */
+.info-box-wrapper.info2-active {
+    background-color: #91cbf1;
+}
+.info-box-wrapper.info2-active .tooltip-tabs button,
+.info-box-wrapper.info2-active .tooltip-tabs button.active,
+.info-box-wrapper.info2-active .tooltip-divider,
+.info-box-wrapper.info2-active .info-display {
+    color: #FFFFFF;
+}
+
 /* Section6_3 設定 */
 .section6_3 {
     background-color: #9ADEF1; /* 與 section6_2 一樣的藍色 */
@@ -894,7 +953,7 @@ body, html {
     font-weight: 800;
     white-space: nowrap;
 }
-  
+
 /* Negative bar style */
 .bar-container.negative .bar-inner {
     background-color: #2D7DB6;
@@ -985,6 +1044,41 @@ body, html {
     transform: translateX(-50%) translateY(-1.25rem);
 }
     
+/* 先恢復 label 本身的絕對定位（跟最一開始一樣） */
+.graph-container > li:nth-child(1) .bar-label {
+    position: absolute;
+    top: -4em;        /* ← 原本的垂直偏移 */
+    left: 120%;       /* ← 原本的水平偏移 */
+    transform: translateX(-50%);
+}
+  
+/* 然後再加上箭頭（和之前一樣） */
+.graph-container > li:nth-child(1) .bar-label::before {
+    /* 箭頭大小，原本是 6px，這裡改成你要的值 */
+    --arrow-size: 15px; /* ← 你可以改成 4px、10px⋯⋯ */
+  
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    /* 用變數來設定三角形的大小 */
+    border-left: var(--arrow-size) solid transparent;
+    border-right: var(--arrow-size) solid transparent;
+    border-top: var(--arrow-size) solid #246D9D;
+    margin-bottom: 10%;  /* 如果箭頭和文字間距太小／太大，也可以微調這裡 */
+    pointer-events: none;
+
+    /* 新增動畫 */
+    animation:
+      floatArrow 1.5s ease-in-out infinite,
+      pulseColor 2s ease-in-out infinite;
+  }
+  
+  
+  
+  
+  
 
  
 /* Section 7 設定 */
@@ -1154,7 +1248,7 @@ body, html {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: pink;
+    background-color: #FFD1D1;
     border-radius: 50%;
     z-index: 1; /* 確保在 icon 背後 */
 }
@@ -1269,7 +1363,6 @@ body, html {
     justify-content: center;
     z-index: 70;
 }
-
 /* 反白文字區塊（獨立位置） */
 .sea-action-container {
     position: absolute;
@@ -1378,7 +1471,53 @@ body, html {
 body {
     overflow-x: hidden;
 }
-
+/* Modal 背景遮罩 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; /* 確保在最上層 */
+}
+  
+/* Modal 內容區 */
+.modal-content {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    max-width: 90%;
+}
+  
+/* 文字樣式 */
+.modal-content p {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #246D9D;
+}
+  
+/* 關閉按鈕 */
+#closeModal {
+    padding: 0.5rem 1rem;
+    background-color: #246D9D;
+    color: #fff;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+}
+#closeModal:hover {
+    background-color: #1b5678;
+}
+/* 確保 alertModal 初始是隱藏的 */
+#alertModal {
+    display: none;
+}
+     
 /* 動畫效果 */
 /* ✅ 波浪動畫效果 */
 @keyframes move-forever {
@@ -1414,4 +1553,15 @@ body {
     animation: subtle-shake 0.6s ease-in-out infinite;
 }
   
-
+/* 在全域加入 keyframes */
+@keyframes floatArrow {
+    0%   { transform: translateX(-50%) translateY(0); }
+    50%  { transform: translateX(-50%) translateY(-5px); }
+    100% { transform: translateX(-50%) translateY(0); }
+}
+  
+@keyframes pulseColor {
+    0%   { border-top-color: #246D9D; }
+    50%  { border-top-color: #7c94ff; }
+    100% { border-top-color: #246D9D; }
+}

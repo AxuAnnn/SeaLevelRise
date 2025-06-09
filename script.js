@@ -91,7 +91,7 @@ gsap.to(".card-container", {
         trigger: ".section3",
         start: "top top",  // **當 section3 完全填滿畫面時開始淡入**
         end: "top top",    // **這裡設相同，確保動畫只有一次**
-        toggleActions: "play none none reverse"  // **滾輪往回滾動時動畫反向**
+        toggleActions: "play none none none"  // **滾輪往回滾動時動畫反向**
     }
 });
 
@@ -189,6 +189,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             .attr("opacity", 1);
             
                         isAnimating = false; // 🔹 **動畫結束，允許 hover**
+                        // 【 新增這段：淡入 tooltip 】
+                        gsap.to(".pie-tooltip", {
+                          opacity: 1,
+                          duration: 0.6,
+                          ease: "power2.out",
+                          delay: 0.3   // 可以微調
+                        });
                     }
                 });
         
@@ -229,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .transition()
             .duration(200)
             .attr("transform", "scale(1.2)")
-            .style("cursor", "pointer");
+            .style("cursor", "default");
     
         text.filter(t => t.index === d.index)
             .transition()
@@ -381,13 +388,25 @@ document.querySelectorAll(".circle-item img").forEach((img, index) => {
         ease: "power1.inOut"
     });
 
-    // ✅ 滑鼠 hover 時「放大並保持」
+    // —— 懸浮提示那一段 ——
+    // 在這段開頭多拿一次原始文字存起來
     document.querySelectorAll(".circle-item").forEach(circle => {
-        circle.addEventListener("mouseenter", function () {
-            gsap.to(this, { scale: 1.2, duration: 0.3, ease: "power2.out" }); // 放大
-            this.style.cursor = "pointer"; // 變成可點擊
-        });
-    });  
+      const tip = circle.querySelector(".circle-text");
+      tip.dataset.original = tip.textContent;  // ← 新增：先把原始文字存到 data-original
+
+      circle.addEventListener("mouseenter", function () {
+          gsap.to(this, { scale: 1.2, duration: 0.3, ease: "power2.out" });
+          this.style.cursor = "pointer";
+
+          // 顯示提示文字
+          tip.textContent = "試著點擊看看";
+          gsap.set(tip, { scale: 0, opacity: 0 });
+          gsap.to(tip, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" });
+      });
+      circle.addEventListener("mouseleave", function () {
+          gsap.to(tip, { scale: 0, opacity: 0, duration: 0.2 });
+      });
+    }); 
 });
 
 // ✅ 初始隱藏所有文字
@@ -395,25 +414,25 @@ gsap.set(".circle-text", { opacity: 0, scale: 0 });
 
 // ✅ 每個泡泡點擊後只觸發一次，顯示對應文字
 document.querySelectorAll(".circle-item").forEach(item => {
-    let clicked = false; // 是否已經點擊過
+  let clicked = false;
 
-    item.addEventListener("click", function () {
-        if (clicked) return; // 如果已經點過，什麼都不做
-        clicked = true;
+  item.addEventListener("click", function () {
+      if (clicked) return;
+      clicked = true;
 
-        const text = item.querySelector(".circle-text");
-        gsap.to(text, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.5,
-            ease: "back.out(1.7)"
-        });
+      const text = item.querySelector(".circle-text");
+      text.textContent = text.dataset.original;  // ← 新增：還原成原本各自的描述文字
 
-        // 禁用再次點擊
-        item.style.pointerEvents = "none";
-    });
+      gsap.to(text, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: "back.out(1.7)"
+      });
+
+      item.style.pointerEvents = "none";
+  });
 });
-
 
 // ✅ **點擊 `.view-more-btn` 時，讓 `.card-text` 顯示**
 document.querySelectorAll(".view-more-btn").forEach(button => {
@@ -456,7 +475,7 @@ gsap.fromTo(".section6_2-heading",
       trigger: ".section6_2",
       start: "top 70%",       // 當 section6_2 接近畫面中段時觸發淡入
       end: "top 10%",         // 淡入後就保持住
-      toggleActions: "play none none reverse",  // 正向淡入、反向淡出
+      toggleActions: "play none none none",  // 正向淡入、反向淡出
       markers: false          // 👉 可打開來 debug 時加上 true
     }
   }
@@ -560,7 +579,16 @@ document.addEventListener("DOMContentLoaded", function () {
         currentInfoType = btn.dataset.type;
         tabButtons.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-        });
+        // 讓外層 .info-box-wrapper 帶上對應的狀態 class
+        const wrapper = document.querySelector(".info-box-wrapper");
+        if (currentInfoType === "info1") {
+            wrapper.classList.add("info1-active");
+            wrapper.classList.remove("info2-active");
+        } else {
+            wrapper.classList.add("info2-active");
+            wrapper.classList.remove("info1-active");
+        }
+      });
     });
 
     // 🔸 滑過地圖 path 時更新右側 infoText 的內容
@@ -673,7 +701,7 @@ gsap.to(".question-container", {
         trigger: ".section7",
         start: "top 70%",
         end: "top 50%",
-        toggleActions: "play none none reverse"
+        toggleActions: "play none none none"
     }
 });
 
@@ -784,77 +812,73 @@ const updateMaskVisibility = () => {
 // 注意：需在 DOMContentLoaded 與 ScrollTrigger 都已正確掛載情況下運行
 
 document.addEventListener("DOMContentLoaded", function () {
-    const waveBackgroundRect = document.querySelector(".wave-background-rect");
-    const waveContainer = document.querySelector(".wave-container");
-    const actionButton = document.querySelector(".action-button");
+  const waveBackgroundRect = document.querySelector(".wave-background-rect");
+  const waveContainer      = document.querySelector(".wave-container");
+  const actionButton       = document.querySelector(".action-button");
+  const modal              = document.getElementById('alertModal');
+  const closeBtn           = document.getElementById('closeModal');
 
-    if (!waveBackgroundRect || !waveContainer || !actionButton) {
-        console.error("❌ 找不到必要元素");
-        return;
-    }
+  let currentHeight = 20,      // 初始高度
+      maxHeight     = 80,
+      minHeight     = 20,
+      riseStep      = 0.05,
+      clickStep     = 2,
+      autoRising    = true,
+      animationFrame,
+      hasTriggered  = false;  // 新增：只彈出一次
 
-    let currentHeight = 20;      // 初始高度
-    const maxHeight = 80;
-    const minHeight = 20;
-    const riseStep = 0.02;       // 每幀上升單位 (vh)
-    const clickStep = 2;         // 每次點擊下降單位 (vh)
-    let autoRising = true;
-    let animationFrame = null;
+  function applyHeight(h) {
+      waveBackgroundRect.setAttribute("height", h);
+      waveBackgroundRect.setAttribute("y", 100 - h);
+      waveContainer.style.bottom = `${h}vh`;
+  }
+  applyHeight(currentHeight);
 
-    // ✅ 初始化最低高度位置
-    function applyHeight(height) {
-        waveBackgroundRect.setAttribute("height", height);
-        waveBackgroundRect.setAttribute("y", 100 - height);
-        waveContainer.style.bottom = `${height}vh`;
-    }
+  function smoothRise() {
+      if (!autoRising || currentHeight >= maxHeight) return;
+      currentHeight = Math.min(currentHeight + riseStep, maxHeight);
+      applyHeight(currentHeight);
+      if (currentHeight < maxHeight && autoRising) {
+          animationFrame = requestAnimationFrame(smoothRise);
+      }
+  }
 
-    applyHeight(currentHeight);
+  // **改動在這裡**
+  actionButton.addEventListener("click", () => {
+      // 每次點擊都往下降
+      currentHeight = Math.max(currentHeight - clickStep, minHeight);
+      applyHeight(currentHeight);
 
-    // ✅ 更平滑的上升動作 (requestAnimationFrame)
-    function smoothRise() {
-        if (!autoRising || currentHeight >= maxHeight) return;
+      // 當高度到最低點，且還沒觸發過，就顯示一次提示框
+      if (currentHeight <= minHeight && !hasTriggered) {
+          hasTriggered = true;
+          autoRising   = false;             // 停掉自動上升
+          cancelAnimationFrame(animationFrame);
+          actionButton.classList.remove("shake");
+          modal.style.display = 'flex';     // 彈出提示
+      }
+  });
 
-        currentHeight = Math.min(currentHeight + riseStep, maxHeight);
-        applyHeight(currentHeight);
+  closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+  });
 
-        if (currentHeight < maxHeight && autoRising) {
-            animationFrame = requestAnimationFrame(smoothRise);
-        }
-    }
-
-    // ✅ 使用者點擊下降
-    actionButton.addEventListener("click", () => {
-        if (currentHeight > minHeight) {
-            currentHeight = Math.max(currentHeight - clickStep, minHeight);
-            applyHeight(currentHeight);
-
-            if (currentHeight <= minHeight) {
-                autoRising = false;
-                cancelAnimationFrame(animationFrame);
-                actionButton.classList.remove("shake");
-            } else {
-                if (!autoRising) {
-                    autoRising = true;
-                    cancelAnimationFrame(animationFrame);
-                    animationFrame = requestAnimationFrame(smoothRise);
-                }
-            }
-        }
-    });
-
-    // ✅ 進入 section8 開始動畫
-    ScrollTrigger.create({
-        trigger: ".section8",
-        start: "top 80%",
-        onEnter: () => {
-            autoRising = true;
-            currentHeight = minHeight;
-            applyHeight(currentHeight);
-            animationFrame = requestAnimationFrame(smoothRise);
-            actionButton.classList.add("shake");
-        }
-    });
+  ScrollTrigger.create({
+      trigger: ".section8",
+      start: "top 80%",
+      onEnter: () => {
+          autoRising = true;
+          currentHeight = minHeight;
+          applyHeight(currentHeight);
+          animationFrame = requestAnimationFrame(smoothRise);
+          actionButton.classList.add("shake");
+          hasTriggered = false; // 進入 section8 重置，讓它可以再觸發一次
+      }
+  });
 });
+
 setTimeout(() => ScrollTrigger.refresh(), 200);
+
+
 
 
